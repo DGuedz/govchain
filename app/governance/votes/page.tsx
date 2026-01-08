@@ -71,7 +71,7 @@ export default function VoteRoomWrapper() {
 }
 
 function VoteRoom() {
-  const { role, loading: roleLoading, isAdmin: realIsAdmin } = useUserRole();
+  const { role, loading: roleLoading, isAdmin: realIsAdmin, isDeliberative } = useUserRole();
   const account = useActiveAccount();
   const searchParams = useSearchParams();
   const isDemo = searchParams.get('demo') === 'true';
@@ -80,8 +80,9 @@ function VoteRoom() {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // For Demo: Simulate Admin
-  const isAdmin = isDemo ? true : realIsAdmin;
+  // For Demo: Simulate Admin if demo mode
+  // For Real: Check if role is admin (Deliberativo)
+  const canCreateProposal = isDemo ? true : isDeliberative;
 
   // For Admin: Create Proposal
   const [newTitle, setNewTitle] = useState("");
@@ -266,15 +267,21 @@ function VoteRoom() {
                 Assembleia Digital
             </h1>
             <p className="text-slate-500">Participe das decisões estratégicas da Cooperativa.</p>
+            {role === 'garimpeiro' && (
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">
+                    <Check className="h-3 w-3" />
+                    Sua voz está garantida: 1 CPF = 1 Voto (Validado via Gov.br)
+                </div>
+            )}
         </div>
         {role && (
             <Badge variant="outline" className="text-sm px-3 py-1 border-[#50C878] text-[#50C878] uppercase">
-                {role === 'admin' ? 'Diretoria' : role === 'council' ? 'Conselho' : 'Cooperado'}
+                {role === 'council' ? 'Conselho Deliberativo' : role === 'miner' ? 'Minerador (Tier 2)' : role === 'garimpeiro' ? 'Garimpeiro (Tier 3)' : role === 'auditor' ? 'Auditor' : 'Cooperado'}
             </Badge>
         )}
       </div>
 
-      {isAdmin && (
+      {canCreateProposal && (
         <Card className="mb-8 border-emerald-100 shadow-sm">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">

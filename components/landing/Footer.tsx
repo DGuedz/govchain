@@ -26,16 +26,16 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link href="/governance" className="hover:text-[#50C878] transition-colors">Portal do Cooperado</Link></li>
               <li><Link href="/public" className="hover:text-[#50C878] transition-colors">Consulta Pública</Link></li>
-              <li><Link href="#" className="hover:text-[#50C878] transition-colors">Estatuto Social</Link></li>
+              <li><Link href="/bylaws" className="hover:text-[#50C878] transition-colors">Estatuto Social</Link></li>
             </ul>
           </div>
           
           <div className="space-y-4">
             <h4 className="text-white font-semibold">Suporte</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-[#50C878] transition-colors">Central de Ajuda</Link></li>
-              <li><Link href="#" className="hover:text-[#50C878] transition-colors">Fale Conosco</Link></li>
-              <li><Link href="#" className="hover:text-[#50C878] transition-colors">Política de Privacidade</Link></li>
+              <li><Link href="/support" className="hover:text-[#50C878] transition-colors">Central de Ajuda</Link></li>
+              <li><Link href="/support" className="hover:text-[#50C878] transition-colors">Fale Conosco</Link></li>
+              <li><Link href="/privacy" className="hover:text-[#50C878] transition-colors">Política de Privacidade</Link></li>
             </ul>
           </div>
         </div>

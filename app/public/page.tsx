@@ -228,10 +228,10 @@ function PublicTransparencyPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Button asChild variant="outline" size="sm" className="text-slate-600 hover:text-[#50C878] hover:border-[#50C878] transition-all">
-                        <a href={`/verify/${doc.id}${isDemo ? '?demo=true' : ''}`} className="flex items-center gap-1">
+                        <Link href={`/verify/${doc.id}${isDemo ? '?demo=true' : ''}`} className="flex items-center gap-1">
                           <ShieldCheck className="h-3.5 w-3.5" />
                           Auditar
-                        </a>
+                        </Link>
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -51,15 +51,15 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
           >
             <Button asChild size="lg" className="bg-[#50C878] hover:bg-[#40b068] text-white font-semibold h-14 px-8 rounded-full shadow-lg shadow-emerald-200/50 w-full sm:w-auto transition-all hover:scale-105">
-              <Link href="/governance">
-                Acessar com Gov.br
+              <Link href="/kyc">
+                Associe-se Agora
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-slate-200 text-slate-700 hover:bg-white hover:text-[#50C878] hover:border-[#50C878] w-full sm:w-auto bg-white/50 backdrop-blur-sm">
-              <Link href="/public">
-                Portal da Transparência
-                <FileText className="ml-2 h-5 w-5" />
+              <Link href="/governance">
+                Já sou Membro
+                <ChevronRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </motion.div>

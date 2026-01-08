@@ -3,8 +3,9 @@
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import { ShieldCheck, FilePlus, Loader2, FileText, CheckCircle2, LayoutDashboard, History, ExternalLink, PlayCircle } from "lucide-react";
+import { ShieldCheck, FilePlus, Loader2, FileText, CheckCircle2, LayoutDashboard, History, ExternalLink, PlayCircle, Gavel, Scale, Coins } from "lucide-react";
 import { OraculoUpload } from "@/components/compound/OraculoUpload";
+import { useUserRole } from "@/hooks/useUserRole";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { supabase } from "@/lib/supabase";
 import {
@@ -64,6 +65,7 @@ function GovernanceContent() {
   const account = useActiveAccount();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { role, isDeliberative, isFiscal, isLegal, isAdmin, isMiner, isGarimpeiro, isCouncil, loading: roleLoading } = useUserRole();
   const isDemo = searchParams.get('demo') === 'true';
   
   const [documents, setDocuments] = useState<DocumentRecord[]>([]);
@@ -133,7 +135,7 @@ function GovernanceContent() {
     refresh();
   };
 
-  if (loading) {
+  if (loading || roleLoading) {
     return (
       <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-[#50C878]" />
@@ -197,6 +199,24 @@ function GovernanceContent() {
     return `${uid.slice(0, 10)}...`;
   };
 
+  const getRoleBadge = () => {
+    switch (role) {
+        case 'council':
+        case 'admin':
+            return <Badge className="bg-red-600 hover:bg-red-700">Conselho Deliberativo</Badge>;
+        case 'fiscal':
+            return <Badge className="bg-yellow-500 hover:bg-yellow-600">Conselho Fiscal</Badge>;
+        case 'legal':
+            return <Badge className="bg-blue-600 hover:bg-blue-700">Conselho Jurídico</Badge>;
+        case 'miner':
+            return <Badge className="bg-amber-600 hover:bg-amber-700">Minerador (Tier 2)</Badge>;
+        case 'garimpeiro':
+            return <Badge className="bg-emerald-600 hover:bg-emerald-700">Garimpeiro (Tier 3)</Badge>;
+        default:
+            return <Badge className="bg-slate-600 hover:bg-slate-700">Membro</Badge>;
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 py-8">
       <div className="container mx-auto px-4 md:px-6 space-y-8">
@@ -216,11 +236,14 @@ function GovernanceContent() {
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Painel de Governança</h1>
             <p className="text-slate-500">Gerencie documentos e participe das decisões da cooperativa.</p>
-            {isDemo && (
-                <p className="text-sm text-slate-400 mt-1">
-                    Logado como: <span className="font-mono bg-slate-100 px-1 rounded">0xDemoUser...1234</span> (Visitante)
-                </p>
-            )}
+            <div className="flex items-center gap-2 mt-2">
+                {getRoleBadge()}
+                {isDemo && (
+                    <p className="text-sm text-slate-400">
+                        Logado como: <span className="font-mono bg-slate-100 px-1 rounded">0xDemoUser...1234</span> (Visitante)
+                    </p>
+                )}
+            </div>
           </div>
           <div className="flex gap-3">
              <Button variant="outline" onClick={() => router.push("/governance/votes" + (isDemo ? "?demo=true" : ""))}>
@@ -294,21 +317,143 @@ function GovernanceContent() {
                 </CardContent>
             </Card>
 
-            {/* Upload Card */}
-            <Card className="shadow-lg border-emerald-200 bg-gradient-to-b from-white to-emerald-50/30">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <FilePlus className="h-5 w-5 text-emerald-600" />
-                        Novo Registro
-                    </CardTitle>
-                    <p className="text-sm text-slate-500">
-                        Faça upload de atas ou contratos para registrá-los eternamente na Base Sepolia.
-                    </p>
-                </CardHeader>
-                <CardContent>
-                    <OraculoUpload onAttestationComplete={handleNewAttestation} isDemo={isDemo} />
-                </CardContent>
-            </Card>
+            {/* Role Based Action Cards */}
+            <div className="space-y-4">
+                {isMiner && (
+                    <Card className="shadow-lg border-amber-200 bg-gradient-to-b from-white to-amber-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-amber-800">
+                                <Coins className="h-5 w-5" />
+                                Produção Mineral
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-sm text-slate-600">
+                                Registre a saída de xisto bruto para os garimpeiros e gere o lastro de origem.
+                            </p>
+                            <Button 
+                                className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+                                onClick={() => router.push("/miner/dashboard")}
+                            >
+                                Acessar Painel do Minerador
+                            </Button>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isGarimpeiro && (
+                    <Card className="shadow-lg border-emerald-200 bg-gradient-to-b from-white to-emerald-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-emerald-800">
+                                <FilePlus className="h-5 w-5" />
+                                Registrar Descoberta
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-sm text-slate-600">
+                                Encontrou uma pedra? Registre aqui vinculando ao lote de xisto para certificação.
+                            </p>
+                            <Button 
+                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                                onClick={() => router.push("/garimpeiro/dashboard")}
+                            >
+                                Acessar Painel do Garimpeiro
+                            </Button>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isCouncil && (
+                    <Card className="shadow-lg border-blue-200 bg-gradient-to-b from-white to-blue-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-blue-800">
+                                <Scale className="h-5 w-5" />
+                                Validação Técnica
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-sm text-slate-600">
+                                Analise e certifique as pedras registradas pelos garimpeiros antes de entrarem no mercado.
+                            </p>
+                            <Button 
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                onClick={() => router.push("/council/validation")}
+                            >
+                                Acessar Mesa de Classificação
+                            </Button>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isDeliberative && (
+                    <Card className="shadow-lg border-emerald-200 bg-gradient-to-b from-white to-emerald-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <FilePlus className="h-5 w-5 text-emerald-600" />
+                                Novo Registro
+                            </CardTitle>
+                            <p className="text-sm text-slate-500">
+                                Faça upload de atas ou contratos para registrá-los eternamente na Base Sepolia.
+                            </p>
+                        </CardHeader>
+                        <CardContent>
+                            <OraculoUpload onAttestationComplete={handleNewAttestation} isDemo={isDemo} />
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isLegal && (
+                    <Card className="shadow-lg border-blue-200 bg-gradient-to-b from-white to-blue-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Scale className="h-5 w-5 text-blue-600" />
+                                Pareceres Legais
+                            </CardTitle>
+                            <p className="text-sm text-slate-500">
+                                Valide minutas contratuais e emita pareceres jurídicos.
+                            </p>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex justify-center p-4 bg-slate-50 rounded border border-dashed border-slate-300">
+                                <span className="text-xs text-slate-400">Upload de Parecer (Em breve)</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isFiscal && (
+                     <Card className="shadow-lg border-yellow-200 bg-gradient-to-b from-white to-yellow-50/30">
+                         <CardHeader>
+                             <CardTitle className="flex items-center gap-2">
+                                 <Coins className="h-5 w-5 text-yellow-600" />
+                                 {isAdmin ? "Auditoria (Diretoria)" : "Auditoria Fiscal"}
+                             </CardTitle>
+                             <p className="text-sm text-slate-500">
+                                 Verifique notas fiscais e saldo do cofre.
+                             </p>
+                         </CardHeader>
+                         <CardContent>
+                             <div className="flex justify-center p-4 bg-slate-50 rounded border border-dashed border-slate-300">
+                                 <span className="text-xs text-slate-400">Auditar Cofre (Em breve)</span>
+                             </div>
+                         </CardContent>
+                     </Card>
+                 )}
+
+                {!isDeliberative && !isLegal && !isFiscal && (
+                    <Card className="shadow-sm border-slate-200">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Gavel className="h-5 w-5 text-slate-500" />
+                                Minhas Votações
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-slate-500">Acompanhe seu histórico de participação nas assembleias.</p>
+                        </CardContent>
+                    </Card>
+                )}
+            </div>
         </div>
       </div>
     </main>

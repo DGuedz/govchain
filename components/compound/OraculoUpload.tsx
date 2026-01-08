@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ShieldCheck, Loader2, FileCheck, UploadCloud } from "lucide-react";
 
@@ -206,12 +207,18 @@ export function OraculoUpload({ onAttestationComplete, isDemo = false }: { onAtt
         <div className="grid gap-6 py-4">
           <div className="grid gap-2">
             <Label htmlFor="doc-type" className="text-slate-600 font-medium">Tipo de Documento</Label>
-            <Input 
-              id="doc-type" 
-              value={docType} 
-              onChange={(e) => setDocType(e.target.value)}
-              className="border-slate-300 focus:border-[#50C878] focus:ring-[#50C878]" 
-            />
+            <Select value={docType} onValueChange={setDocType}>
+              <SelectTrigger className="border-slate-300 focus:ring-[#50C878]">
+                <SelectValue placeholder="Selecione o tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Ata de Reunião">Ata de Reunião</SelectItem>
+                <SelectItem value="Pauta de Assembleia">Pauta de Assembleia</SelectItem>
+                <SelectItem value="Contrato">Contrato</SelectItem>
+                <SelectItem value="Laudo Técnico">Laudo Técnico</SelectItem>
+                <SelectItem value="Relatório Financeiro">Relatório Financeiro</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="grid gap-2">

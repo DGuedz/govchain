@@ -2,6 +2,7 @@
 
 import { FileText, PenTool, Database, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const steps = [
   {
@@ -9,18 +10,21 @@ const steps = [
     title: "1. O Oráculo de Origem",
     description: "A Secretaria digitaliza a Ata ou Relatório no portal seguro. O sistema prepara o ativo digital.",
     color: "bg-blue-50 border-blue-100",
+    href: "/governance"
   },
   {
     icon: <PenTool className="h-8 w-8 text-[#50C878]" />,
     title: "2. Assinatura com Validade Legal",
     description: "A autenticação via Gov.br confere validade jurídica (ICP-Brasil) e identifica os responsáveis.",
     color: "bg-emerald-50 border-emerald-100",
+    href: "/protocolo"
   },
   {
     icon: <Database className="h-8 w-8 text-purple-600" />,
     title: "3. O Selo de Verdade Eterna",
     description: "O hash criptográfico é gravado na Blockchain (EAS), criando uma prova matemática imutável.",
     color: "bg-purple-50 border-purple-100",
+    href: "/public"
   },
 ];
 
@@ -50,14 +54,18 @@ export function HowItWorks() {
               transition={{ duration: 0.5, delay: index * 0.2 }}
               className="relative flex flex-col items-center text-center space-y-4"
             >
-              <div className={`relative z-10 flex items-center justify-center w-24 h-24 rounded-2xl border-2 ${step.color} shadow-sm bg-white transition-transform hover:scale-105 duration-300`}>
-                {step.icon}
-                <div className="absolute -bottom-3 bg-white px-2 py-0.5 rounded-full border text-xs font-bold text-slate-400 shadow-sm">
-                  {index + 1}
+              <Link href={step.href} className="group relative">
+                <div className={`relative z-10 flex items-center justify-center w-24 h-24 rounded-2xl border-2 ${step.color} shadow-sm bg-white transition-transform group-hover:scale-105 duration-300`}>
+                  {step.icon}
+                  <div className="absolute -bottom-3 bg-white px-2 py-0.5 rounded-full border text-xs font-bold text-slate-400 shadow-sm">
+                    {index + 1}
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="space-y-2 pt-2">
-                <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
+                <Link href={step.href} className="block group">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#50C878] transition-colors">{step.title}</h3>
+                </Link>
                 <p className="text-slate-500 text-sm leading-relaxed px-4">
                   {step.description}
                 </p>

@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { supabase } from "@/lib/supabase";
+import { useMockWallet } from "@/hooks/useMockWallet";
 
-export type UserRole = "admin" | "council" | "member" | null;
+export type UserRole = "council" | "miner" | "garimpeiro" | "auditor" | "admin" | "fiscal" | "legal" | "member" | null;
 
 export function useUserRole() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+
   const [role, setRole] = useState<UserRole>(null);
+  const [verifiedGovBr, setVerifiedGovBr] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchRole() {
-      if (!account) {
+      if (!activeAddress) {
         setRole(null);
+        setVerifiedGovBr(false);
         setLoading(false);
         return;
       }
@@ -25,19 +31,19 @@ export function useUserRole() {
         // First check if profile exists
         let { data, error } = await supabase
           .from("profiles")
-          .select("role")
-          .eq("wallet_address", account.address)
+          .select("role, verified_govbr")
+          .eq("wallet_address", activeAddress)
           .single();
 
         if (!data && !error) {
-            // If no profile, create a default 'member' profile for this wallet (Auto-registration for MVP)
+            // If no profile, create a default 'garimpeiro' profile for this wallet (Auto-registration for MVP)
             const { data: newProfile, error: createError } = await supabase
                 .from("profiles")
                 .insert({
-                    wallet_address: account.address,
-                    role: 'member'
+                    wallet_address: activeAddress,
+                    role: 'garimpeiro' // Default Tier 3
                 })
-                .select("role")
+                .select("role, verified_govbr")
                 .single();
             
             if (newProfile) {
@@ -47,21 +53,45 @@ export function useUserRole() {
 
         if (data) {
           setRole(data.role as UserRole);
+          setVerifiedGovBr(data.verified_govbr || false);
         } else {
-            // Default to member if something goes wrong or RLS prevents reading
-            setRole("member");
+            // Default to garimpeiro if something goes wrong or RLS prevents reading
+            setRole("garimpeiro");
         }
 
       } catch (err) {
         console.error("Error fetching role:", err);
-        setRole("member"); // Fallback
+        setRole("garimpeiro"); // Fallback
       } finally {
         setLoading(false);
       }
     }
 
     fetchRole();
-  }, [account]);
+  }, [activeAddress]);
 
-  return { role, loading, isAdmin: role === "admin", isCouncil: role === "council" };
+  // Map legacy roles to new tiers for backward compatibility
+  const normalizedRole = role === 'admin' ? 'council' : role === 'fiscal' || role === 'legal' ? 'auditor' : role === 'member' ? 'garimpeiro' : role;
+
+  return { 
+    role,
+    verifiedGovBr, 
+    loading, 
+    // Tier 1: Council (Strategists)
+    isCouncil: normalizedRole === "council",
+    isAdmin: normalizedRole === "council", // Alias for backward compatibility
+    isDeliberative: normalizedRole === "council", // Alias
+    
+    // Tier 2: Miner (Producers)
+    isMiner: normalizedRole === "miner" || normalizedRole === "council",
+    
+    // Tier 3: Garimpeiro (Community)
+    isGarimpeiro: normalizedRole === "garimpeiro" || normalizedRole === "miner" || normalizedRole === "council",
+    isMember: normalizedRole === "garimpeiro" || normalizedRole === "miner" || normalizedRole === "council", // Alias
+    
+    // Auditors
+    isAuditor: normalizedRole === "auditor" || normalizedRole === "council",
+    isFiscal: normalizedRole === "auditor" || normalizedRole === "council", // Alias
+    isLegal: normalizedRole === "auditor" || normalizedRole === "council" // Alias
+  };
 }
