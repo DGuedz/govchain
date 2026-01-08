@@ -1,0 +1,6 @@
+export const EAS_CONFIG = {
+  // Placeholder Schema UID for Base Sepolia
+  // Schema: bytes32 contentHash, string docType, uint256 timestamp
+  SCHEMA_UID: process.env.NEXT_PUBLIC_SCHEMA_UID || "0x0000000000000000000000000000000000000000000000000000000000000000",
+  EAS_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS || "0x4200000000000000000000000000000000000021", // Base Sepolia EAS
+};
