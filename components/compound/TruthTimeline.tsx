@@ -1,60 +1,88 @@
 "use client";
 
-import { CheckCircle2, FileText, PenTool, ShieldCheck, Clock } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ShieldCheck, FileDigit, Link } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-interface TimelineEvent {
+interface TimelineStep {
   title: string;
-  date: string;
   description: string;
-  icon: React.ReactNode;
-  status: "completed" | "pending";
+  status: "waiting" | "active" | "completed";
+  icon: React.ElementType;
 }
 
-export function TruthTimeline({ createdAt, signedAt, attestedAt, uid }: { createdAt: string, signedAt?: string, attestedAt?: string, uid?: string }) {
-  const events: TimelineEvent[] = [
+interface TruthTimelineProps {
+  currentStep: number; // 0 to 3
+}
+
+export function TruthTimeline({ currentStep }: TruthTimelineProps) {
+  const steps: TimelineStep[] = [
     {
-      title: "Documento Criado",
-      date: new Date(createdAt).toLocaleString(),
-      description: "Upload realizado no Oráculo de Origem.",
-      icon: <FileText className="h-4 w-4" />,
-      status: "completed",
+      title: "Verdade Material",
+      description: "Digitalização e Marca D'água",
+      status: currentStep > 0 ? "completed" : currentStep === 0 ? "active" : "waiting",
+      icon: FileDigit,
     },
     {
-      title: "Assinado Legalmente",
-      date: signedAt ? new Date(signedAt).toLocaleString() : "Pendente",
-      description: "Autenticado via Gov.br (ICP-Brasil).",
-      icon: <PenTool className="h-4 w-4" />,
-      status: signedAt ? "completed" : "pending",
+      title: "Verdade Matemática",
+      description: "Cálculo de Hash Único (SHA-256)",
+      status: currentStep > 1 ? "completed" : currentStep === 1 ? "active" : "waiting",
+      icon: Link,
     },
     {
-      title: "Eternizado na Blockchain",
-      date: attestedAt ? new Date(attestedAt).toLocaleString() : "Pendente",
-      description: uid ? `UID: ${uid.slice(0, 10)}...` : "Aguardando registro EAS.",
-      icon: <ShieldCheck className="h-4 w-4" />,
-      status: attestedAt ? "completed" : "pending",
+      title: "Verdade Eterna",
+      description: "Registro Imutável na Blockchain",
+      status: currentStep > 2 ? "completed" : currentStep === 2 ? "active" : "waiting",
+      icon: ShieldCheck,
     },
   ];
 
   return (
-    <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-      {events.map((event, index) => (
-        <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-          
-          <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-50 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-            {event.status === "completed" ? <CheckCircle2 className="h-5 w-5" /> : <Clock className="h-5 w-5" />}
-          </div>
-          
-          <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow-sm">
-            <div className="flex items-center justify-between space-x-2 mb-1">
-              <div className="font-bold text-slate-900">{event.title}</div>
-              <time className="font-mono text-xs text-slate-500">{event.date}</time>
+    <div className="w-full max-w-md mx-auto py-4">
+      <div className="relative">
+        {/* Vertical Line */}
+        <div className="absolute left-6 top-4 h-[80%] w-0.5 bg-slate-200" />
+        
+        <div className="space-y-8">
+          {steps.map((step, index) => (
+            <div key={index} className="relative flex items-start gap-4">
+              {/* Icon Bubble */}
+              <div
+                className={cn(
+                  "relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 bg-white transition-all duration-500",
+                  step.status === "completed"
+                    ? "border-[#50C878] bg-emerald-50 text-[#50C878]"
+                    : step.status === "active"
+                    ? "border-blue-500 bg-blue-50 text-blue-600 ring-4 ring-blue-100"
+                    : "border-slate-200 text-slate-300"
+                )}
+              >
+                {step.status === "active" ? (
+                   <Loader2 className="h-6 w-6 animate-spin" />
+                ) : (
+                   <step.icon className="h-6 w-6" />
+                )}
+                
+                {step.status === "completed" && (
+                    <div className="absolute -right-1 -bottom-1 bg-[#50C878] rounded-full p-0.5 border-2 border-white">
+                        <CheckCircle2 className="h-3 w-3 text-white" />
+                    </div>
+                )}
+              </div>
+
+              {/* Text Content */}
+              <div className={cn("pt-1 transition-all duration-500", step.status === "waiting" && "opacity-50")}>
+                <h3 className={cn("font-bold text-sm", 
+                    step.status === "active" ? "text-blue-700" : 
+                    step.status === "completed" ? "text-[#50C878]" : "text-slate-500"
+                )}>
+                  {step.title}
+                </h3>
+                <p className="text-xs text-slate-500">{step.description}</p>
+              </div>
             </div>
-            <div className="text-slate-500 text-sm">
-              {event.description}
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
