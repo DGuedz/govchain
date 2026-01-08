@@ -414,9 +414,12 @@ function GovernanceContent() {
                             </p>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex justify-center p-4 bg-slate-50 rounded border border-dashed border-slate-300">
-                                <span className="text-xs text-slate-400">Upload de Parecer (Em breve)</span>
-                            </div>
+                            <Button 
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                onClick={() => router.push("/blindagem/juridica")}
+                            >
+                                Acessar Mesa Jurídica
+                            </Button>
                         </CardContent>
                     </Card>
                 )}
@@ -433,9 +436,12 @@ function GovernanceContent() {
                              </p>
                          </CardHeader>
                          <CardContent>
-                             <div className="flex justify-center p-4 bg-slate-50 rounded border border-dashed border-slate-300">
-                                 <span className="text-xs text-slate-400">Auditar Cofre (Em breve)</span>
-                             </div>
+                             <Button 
+                                 className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                                 onClick={() => router.push("/council/audit")}
+                             >
+                                 Acessar Auditoria Fiscal
+                             </Button>
                          </CardContent>
                      </Card>
                  )}
