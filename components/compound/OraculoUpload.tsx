@@ -23,7 +23,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { ShieldCheck, Loader2, FileCheck, UploadCloud } from "lucide-react";
 
-export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete: (data: any) => void }) {
+export function OraculoUpload({ onAttestationComplete, isDemo = false }: { onAttestationComplete: (data: any) => void, isDemo?: boolean }) {
   const account = useActiveAccount();
   const { attestDocument, status } = useAttest();
   
@@ -44,11 +44,43 @@ export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete
   };
 
   const processDocument = async () => {
-    if (!file || !account) return;
+    if (!file) return;
+    if (!isDemo && !account) {
+        toast.error("Conecte sua carteira para continuar.");
+        return;
+    }
 
     try {
       setProgress(10);
       toast.info("Iniciando a Tripla Blindagem...");
+
+      if (isDemo) {
+        // Simulação Demo
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setProgress(30);
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setProgress(50);
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setProgress(80);
+        toast.success("Documento Simulado com Sucesso!");
+        
+        const mockData = {
+            id: `demo-${Date.now()}`,
+            title: file.name.replace(".pdf", ""),
+            type: docType,
+            date: new Date().toISOString(),
+            status: "Registrado (Demo)",
+            hash: "0xdemo..." + Math.random().toString(36).substring(7),
+            attestationId: "0xattest..." + Math.random().toString(36).substring(7),
+            ipfsCid: "QmDemo..." + Math.random().toString(36).substring(7)
+        };
+        
+        onAttestationComplete(mockData);
+        setIsOpen(false);
+        setFile(null);
+        setProgress(0);
+        return;
+      }
 
       // 1. Oráculo: Marca D'água
       const arrayBuffer = await file.arrayBuffer();
@@ -60,7 +92,7 @@ export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete
       const { width, height } = firstPage.getSize();
       
       const dateStr = new Date().toLocaleString("pt-BR");
-      const walletShort = `${account.address.slice(0, 6)}...${account.address.slice(-4)}`;
+      const walletShort = `${account!.address.slice(0, 6)}...${account!.address.slice(-4)}`;
       const watermarkText = `Validado via GovChain | ${dateStr} | Resp: ${walletShort}`;
 
       firstPage.drawText(watermarkText, {
@@ -89,7 +121,7 @@ export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete
 
       // 3. Persistência: Upload para Supabase Storage
       toast.info("Salvando na Nuvem Segura...");
-      const blob = new Blob([modifiedPdfBytes], { type: "application/pdf" });
+      const blob = new Blob([modifiedPdfBytes as any], { type: "application/pdf" });
       const fileName = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
       
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -108,11 +140,11 @@ export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete
       const signer = await ethers6Adapter.signer.toEthers({ 
         client, 
         chain, 
-        account 
+        account: account! 
       });
 
       toast.info("Conectando ao EAS (Ethereum Attestation Service)...");
-      const uid = await attestDocument(signer, hash, docType);
+      const uid = await attestDocument(signer as any, hash, docType);
       
       // 5. Registro Final: Banco de Dados
       const { error: dbError } = await supabase
@@ -122,7 +154,7 @@ export function OraculoUpload({ onAttestationComplete }: { onAttestationComplete
           file_url: publicUrl,
           file_hash: hash,
           eas_uid: uid,
-          signer_wallet: account.address,
+          signer_wallet: account!.address,
           status: "attested_onchain"
         });
 

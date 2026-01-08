@@ -85,7 +85,7 @@ export function DocumentUploader({ onAttestationComplete }: { onAttestationCompl
 
       // 4. Attest on Blockchain
       toast.info("Registrando no Cartório Digital (Blockchain)...");
-      const uid = await attestDocument(signer, hash, docType);
+      const uid = await attestDocument(signer as any, hash, docType);
       
       setProgress(100);
       toast.success("Documento registrado com sucesso!");

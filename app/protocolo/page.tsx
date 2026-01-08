@@ -88,7 +88,7 @@ export default function ProtocoloPage() {
                 <div className="min-w-[4px] h-full bg-slate-200" />
                 <div>
                   <h3 className="font-semibold text-slate-900">Processos Padronizados</h3>
-                  <p className="text-slate-600">Todo documento segue um ciclo de vida rigoroso: Criação -> Validação -> Hash (Blockchain) -> Publicação.</p>
+                  <p className="text-slate-600">Todo documento segue um ciclo de vida rigoroso: Criação &rarr; Validação &rarr; Hash (Blockchain) &rarr; Publicação.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
