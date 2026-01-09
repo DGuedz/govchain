@@ -5,6 +5,7 @@ import { ThirdwebProvider } from "thirdweb/react";
 import { cn } from "@/lib/utils";
 import { LayoutNavbar } from "@/components/LayoutNavbar";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,18 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
+        <Script id="sw-cleanup" strategy="beforeInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                  registration.unregister();
+                  console.log('ServiceWorker PayHub/Legacy unregistered');
+                }
+              });
+            }
+          `}
+        </Script>
         <ThirdwebProvider>
           <div className="flex min-h-screen flex-col">
             <LayoutNavbar />
