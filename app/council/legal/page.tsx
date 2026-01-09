@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
-export default function LegalDashboard() {
+export default function LegalCouncilPage() {
   const account = useActiveAccount();
   const router = useRouter();
   const { isLegal, isAdmin, isCouncil, loading } = useUserRole();
@@ -59,7 +59,7 @@ export default function LegalDashboard() {
         <div className="container mx-auto px-4 md:px-6">
           <Breadcrumbs items={[
             { label: "Governança", href: "/governance" },
-            { label: "Conselho Jurídico" }
+            { label: "Conselho Jurídico", href: "/council/legal" }
           ]} className="text-slate-400 mb-6" />
           
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">

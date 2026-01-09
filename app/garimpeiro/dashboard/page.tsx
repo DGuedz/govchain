@@ -3,6 +3,7 @@
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useMockWallet } from "@/hooks/useMockWallet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,9 @@ import { Plus, Wallet, History, ChevronRight, Gem } from "lucide-react";
 
 export default function GarimpeiroDashboard() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  // const activeAddress = account?.address || (isMockConnected ? mockAddress : null); // Keep for future use
+
   const router = useRouter();
   const { isGarimpeiro, loading } = useUserRole();
 
@@ -32,29 +36,29 @@ export default function GarimpeiroDashboard() {
       <div className="bg-emerald-600 px-4 pt-12 pb-6 rounded-b-[2rem] shadow-lg">
         <div className="flex items-center justify-between text-white mb-6">
             <div>
-                <p className="text-emerald-100 text-sm">Bem-vindo,</p>
-                <h1 className="text-2xl font-bold">Garimpeiro</h1>
+                <p className="text-emerald-100 text-sm">Olá, Parceiro</p>
+                <h1 className="text-2xl font-bold">Cooperado</h1>
             </div>
-            <div className="h-10 w-10 bg-emerald-500 rounded-full flex items-center justify-center">
+            <div className="h-10 w-10 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-emerald-400">
                 <span className="font-bold text-sm">JP</span>
             </div>
         </div>
 
         {/* Saldo Card */}
         <div className="bg-white rounded-xl p-4 shadow-sm text-slate-900">
-            <div className="flex items-center gap-2 mb-2 text-slate-500 text-sm">
-                <Wallet className="h-4 w-4" />
-                <span>Saldo Disponível</span>
+            <div className="flex items-center gap-2 mb-2 text-slate-500 text-sm font-medium">
+                <Wallet className="h-4 w-4 text-emerald-600" />
+                <span>Seu Valor Gerado</span>
             </div>
-            <div className="text-3xl font-bold text-emerald-600">
+            <div className="text-3xl font-bold text-slate-900">
                 R$ 1.450,00
             </div>
             <div className="mt-3 pt-3 border-t flex gap-2">
-                <Button className="flex-1 bg-emerald-600 h-10 text-sm">
-                    Sacar PIX
+                <Button className="flex-1 bg-[#50C878] hover:bg-[#40b068] h-10 text-sm font-semibold shadow-sm">
+                    Solicitar PIX
                 </Button>
-                <Button variant="outline" className="flex-1 h-10 text-sm border-emerald-200 text-emerald-700">
-                    Extrato
+                <Button variant="outline" className="flex-1 h-10 text-sm border-slate-200 text-slate-600 hover:bg-slate-50">
+                    Ver Extrato
                 </Button>
             </div>
         </div>
@@ -63,46 +67,49 @@ export default function GarimpeiroDashboard() {
       <div className="px-4 mt-6 space-y-6">
         {/* Quick Action */}
         <div>
-            <h2 className="text-lg font-bold text-slate-800 mb-3">O que deseja fazer?</h2>
+            <h2 className="text-lg font-bold text-slate-800 mb-3">Acesso Rápido</h2>
             <Button 
-                className="w-full h-14 bg-slate-900 text-white rounded-xl shadow-md flex items-center justify-between px-4"
+                className="w-full h-16 bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-md flex items-center justify-between px-4 transition-all active:scale-95"
                 onClick={() => {}} // TODO: Add register logic
             >
-                <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 bg-slate-700 rounded-full flex items-center justify-center">
-                        <Plus className="h-5 w-5" />
+                <div className="flex items-center gap-4">
+                    <div className="h-10 w-10 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700">
+                        <Plus className="h-6 w-6 text-[#50C878]" />
                     </div>
-                    <span className="font-medium">Registrar Nova Pedra</span>
+                    <div className="text-left">
+                        <span className="block font-bold text-base">Declarar Produção</span>
+                        <span className="block text-xs text-slate-400 font-normal">Registrar novo lote de esmeraldas</span>
+                    </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-slate-400" />
+                <ChevronRight className="h-5 w-5 text-slate-500" />
             </Button>
         </div>
 
         {/* Recent Items */}
         <div>
             <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-bold text-slate-800">Minhas Pedras</h2>
-                <Button variant="ghost" size="sm" className="text-emerald-600 h-auto p-0">Ver todas</Button>
+                <h2 className="text-lg font-bold text-slate-800">Minhas Declarações</h2>
+                <Button variant="ghost" size="sm" className="text-[#50C878] h-auto p-0 hover:text-emerald-700 font-medium">Ver todas</Button>
             </div>
 
             <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                    <Card key={i} className="border-none shadow-sm">
+                    <Card key={i} className="border-none shadow-sm bg-white active:bg-slate-50 transition-colors cursor-pointer">
                         <CardContent className="p-4 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                    <Gem className="h-5 w-5 text-emerald-600" />
+                                <div className="h-12 w-12 bg-emerald-50 rounded-xl flex items-center justify-center border border-emerald-100">
+                                    <Gem className="h-6 w-6 text-[#50C878]" />
                                 </div>
                                 <div>
-                                    <p className="font-medium text-slate-900">Lote #2024-{i}</p>
-                                    <p className="text-xs text-slate-500">Há {i} dias</p>
+                                    <p className="font-bold text-slate-900">Lote #2024-{i}</p>
+                                    <p className="text-xs text-slate-500 font-medium">Há {i} dias • 120g</p>
                                 </div>
                             </div>
                             <div className="text-right">
                                 {i === 1 ? (
-                                    <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-none">Pago</Badge>
+                                    <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 border-none px-3 py-1">Pago</Badge>
                                 ) : (
-                                    <Badge variant="outline" className="text-amber-600 border-amber-200 bg-amber-50">Análise</Badge>
+                                    <Badge variant="outline" className="text-amber-600 border-amber-200 bg-amber-50 px-3 py-1">Em Validação</Badge>
                                 )}
                             </div>
                         </CardContent>

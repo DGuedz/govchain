@@ -12,10 +12,13 @@ import { useUserRole } from "@/hooks/useUserRole";
 
 export default function OraclePage() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const isDemo = searchParams.get('demo') === 'true';
-  const { role, isLoading } = useUserRole();
+  const { role, loading: isLoading } = useUserRole();
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
@@ -26,20 +29,21 @@ export default function OraclePage() {
     }
 
     if (!isLoading) {
-      if (!account) {
+      if (!activeAddress) {
         toast.error("Acesso restrito. Faça login.");
         router.push("/governance");
         return;
       }
       // Simple role check (In production this would be more robust)
-      if (role === 'admin' || role === 'president') {
+      // Note: In DEV_NET, role is forced to 'admin'
+      if (role === 'admin' || role === 'president' || role === 'council') {
         setIsAuthorized(true);
       } else {
         toast.error("Acesso negado. Apenas administradores.");
         router.push("/governance");
       }
     }
-  }, [account, role, isLoading, router, isDemo]);
+  }, [activeAddress, role, isLoading, router, isDemo]);
 
   const handleAttestationComplete = (data: any) => {
     console.log("Attestation complete:", data);

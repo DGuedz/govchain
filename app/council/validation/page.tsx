@@ -5,6 +5,7 @@ import { useActiveAccount } from "thirdweb/react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useMockWallet } from "@/hooks/useMockWallet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Loader2, ArrowLeft, CheckCircle2, XCircle, Scale, User, Box } from "lucide-react";
@@ -55,12 +56,12 @@ export default function ValidationDashboard() {
   }
 
   const handleValidation = async (findId: string, decision: 'validated' | 'rejected') => {
-    if (!account) return;
+    if (!activeAddress) return;
     setIsProcessing(findId);
 
     try {
         // Get Validator Profile ID
-        const { data: profile } = await supabase.from('profiles').select('id').eq('wallet_address', account.address).single();
+        const { data: profile } = await supabase.from('profiles').select('id').eq('wallet_address', activeAddress).single();
         if (!profile) throw new Error("Perfil não encontrado.");
 
         const { error } = await supabase

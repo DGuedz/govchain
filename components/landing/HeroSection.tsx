@@ -22,8 +22,8 @@ export function HeroSection() {
             className="inline-flex items-center rounded-full border border-emerald-200 bg-white/50 backdrop-blur-sm px-3 py-1 text-sm font-medium text-emerald-800 mb-4 shadow-sm"
           >
             <ShieldCheck className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Segurança Jurídica & Rastreabilidade Eterna</span>
-            <span className="sm:hidden">Segurança & Rastreabilidade</span>
+            <span className="hidden sm:inline">Segurança Oficial & Valorização do Minerador</span>
+            <span className="sm:hidden">Segurança & Valor</span>
           </motion.div>
 
           <motion.div 
@@ -33,14 +33,14 @@ export function HeroSection() {
             className="space-y-4 max-w-4xl"
           >
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-slate-900 leading-[1.1]">
-              GovChain <span className="text-slate-300">|</span> <br className="hidden md:block" />
+              A Governança Digital da <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#50C878] to-emerald-700">
-                O Protocolo da Verdade Híbrida
+                COOPESMERALDA
               </span>
             </h1>
             <p className="mx-auto max-w-[800px] text-slate-600 md:text-xl leading-relaxed">
-              O Portal <strong>GovChain</strong> é o sistema nervoso central do projeto <strong>Campos Verdes 2050</strong>. 
-              Conectamos a mineração à economia global através de um modelo de gestão que une a legalidade estatal (Gov.br) à tecnologia Web3 (EAS).
+              Mais segurança para o seu trabalho, mais valor para a sua pedra. 
+              O sistema oficial que conecta o minerador ao mercado global com garantia total de origem.
             </p>
           </motion.div>
           
@@ -51,14 +51,14 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
           >
             <Button asChild size="lg" className="bg-[#50C878] hover:bg-[#40b068] text-white font-semibold h-14 px-8 rounded-full shadow-lg shadow-emerald-200/50 w-full sm:w-auto transition-all hover:scale-105">
-              <Link href="/kyc">
-                Associe-se Agora
+              <Link href="/login">
+                Entrar com Gov.br
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-slate-200 text-slate-700 hover:bg-white hover:text-[#50C878] hover:border-[#50C878] w-full sm:w-auto bg-white/50 backdrop-blur-sm">
-              <Link href="/governance">
-                Já sou Membro
+              <Link href="/kyc">
+                Quero me Associar
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -73,15 +73,15 @@ export function HeroSection() {
           >
              <div className="flex flex-col items-center p-4 bg-white/60 rounded-xl border border-emerald-100/50 shadow-sm backdrop-blur-sm">
                 <span className="font-bold text-2xl text-slate-800">1.205</span>
-                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Atas Registradas</span>
+                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Documentos Blindados</span>
+             </div>
+             <div className="flex flex-col items-center p-4 bg-white/60 rounded-xl border border-emerald-100/50 shadow-sm backdrop-blur-sm">
+                <span className="font-bold text-2xl text-slate-800">342</span>
+                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Famílias Integradas</span>
              </div>
              <div className="flex flex-col items-center p-4 bg-white/60 rounded-xl border border-emerald-100/50 shadow-sm backdrop-blur-sm">
                 <span className="font-bold text-2xl text-slate-800">100%</span>
-                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Transparência</span>
-             </div>
-             <div className="flex flex-col items-center p-4 bg-white/60 rounded-xl border border-emerald-100/50 shadow-sm backdrop-blur-sm">
-                <span className="font-bold text-2xl text-slate-800">Tripla</span>
-                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Blindagem</span>
+                <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">Auditável</span>
              </div>
           </motion.div>
         </div>

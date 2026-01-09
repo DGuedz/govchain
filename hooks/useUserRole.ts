@@ -10,12 +10,25 @@ export function useUserRole() {
   const { mockAddress, isConnected: isMockConnected } = useMockWallet();
   const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
 
+  // --- DEV NET MODE (GOD MODE) ---
+  // Quando true, libera acesso total para desenvolvimento e simulação.
+  // Isso permite testar todas as telas (Garimpeiro, Jurídico, Conselho) sem barreiras.
+  const IS_DEV_NET = true; 
+
   const [role, setRole] = useState<UserRole>(null);
   const [verifiedGovBr, setVerifiedGovBr] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchRole() {
+      if (IS_DEV_NET) {
+        // Simulação de "Super Usuário" para Dev Net
+        setRole("admin"); // Papel máximo
+        setVerifiedGovBr(true);
+        setLoading(false);
+        return;
+      }
+
       if (!activeAddress) {
         setRole(null);
         setVerifiedGovBr(false);
@@ -72,6 +85,23 @@ export function useUserRole() {
 
   // Map legacy roles to new tiers for backward compatibility
   const normalizedRole = role === 'admin' ? 'council' : role === 'fiscal' || role === 'legal' ? 'auditor' : role === 'member' ? 'garimpeiro' : role;
+
+  if (IS_DEV_NET) {
+    return {
+        role: 'admin',
+        verifiedGovBr: true,
+        loading: false,
+        isCouncil: true,
+        isAdmin: true,
+        isDeliberative: true,
+        isMiner: true,
+        isGarimpeiro: true,
+        isMember: true,
+        isAuditor: true,
+        isFiscal: true,
+        isLegal: true
+    };
+  }
 
   return { 
     role,

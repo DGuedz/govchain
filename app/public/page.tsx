@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { 
   Table, 
   TableBody, 
@@ -14,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, FileText, ExternalLink, ShieldCheck, Loader2 } from "lucide-react";
+import { Search, FileText, ShieldCheck, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
@@ -85,7 +86,10 @@ function PublicTransparencyPage() {
 
   useEffect(() => {
     async function fetchDocuments() {
-      if (isDemo) {
+      // Use mock data if in demo mode OR if Supabase is not configured (preventing crash)
+      const useMockData = isDemo || !isSupabaseConfigured();
+
+      if (useMockData) {
           setTimeout(() => {
               setDocuments(MOCK_PUBLIC_DOCS);
               setLoading(false);

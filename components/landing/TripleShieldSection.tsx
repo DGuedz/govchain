@@ -6,23 +6,23 @@ import Link from "next/link";
 
 const shields = [
   {
-    icon: <Gavel className="h-10 w-10 text-white" />,
-    title: "Blindagem Jurídica",
-    description: "Autenticidade garantida pelo Gov.br (ICP-Brasil) e imutabilidade via Blockchain, protegendo o CPF dos gestores.",
+    icon: Gavel,
+    title: "Proteção do seu CPF",
+    description: "Cada decisão é assinada digitalmente. Isso garante que você e a diretoria estejam juridicamente seguros contra processos antigos.",
     bg: "bg-slate-900",
     link: "/blindagem/juridica"
   },
   {
-    icon: <Users className="h-10 w-10 text-white" />,
-    title: "Blindagem Social",
-    description: "Transparência radical que elimina o 'Ciúme Político', gerando confiança entre cooperados e comunidade.",
+    icon: Users,
+    title: "O Fim da Desconfiança",
+    description: "Transparência total. O que é decidido na assembleia fica gravado para sempre. Acabou a dúvida, vale o que está na tela.",
     bg: "bg-emerald-600",
     link: "/blindagem/social"
   },
   {
-    icon: <Leaf className="h-10 w-10 text-white" />,
-    title: "Blindagem Ambiental",
-    description: "Rastreabilidade de processos que comprova a conformidade e responsabilidade ecológica da mineração.",
+    icon: Leaf,
+    title: "Sua Pedra Vale Mais",
+    description: "O mercado internacional paga caro por esmeraldas com origem provada. O sistema gera o histórico que o comprador exige.",
     bg: "bg-blue-600",
     link: "/blindagem/ambiental"
   },
@@ -30,17 +30,17 @@ const shields = [
 
 export function TripleShieldSection() {
   return (
-    <section className="py-24 bg-slate-50 relative overflow-hidden">
+    <section id="beneficios" className="py-24 bg-slate-50 relative overflow-hidden">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="text-center mb-16 space-y-4">
           <div className="inline-block rounded-lg bg-emerald-100 px-3 py-1 text-sm text-emerald-800 font-semibold mb-2">
             Segurança Institucional
           </div>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-slate-900">
-            A <span className="text-[#50C878]">Tripla Blindagem</span> do GovChain
+            Por que usar o <span className="text-[#50C878]">Gov.Chain?</span>
           </h2>
           <p className="mx-auto max-w-[700px] text-slate-500 md:text-lg">
-            Mais que tecnologia, um escudo de proteção para a COOPESMERALDA e seus gestores.
+            Tecnologia invisível que resolve problemas reais da cooperativa.
           </p>
         </div>
 
@@ -52,15 +52,24 @@ export function TripleShieldSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="relative group h-full overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="relative group h-full overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
               >
                 <div className={`absolute top-0 left-0 w-full h-2 ${shield.bg}`} />
                 <div className="p-8 space-y-6">
-                  <div className={`inline-flex items-center justify-center p-4 rounded-xl ${shield.bg} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {shield.icon}
+                  {/* Icon Container with Neon Effect */}
+                  <div className="relative inline-flex items-center justify-center">
+                    {/* The Aura/Glow */}
+                    <div className={`absolute inset-0 rounded-xl blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500 ${shield.bg.replace('bg-', 'bg-opacity-40 bg-')}`} />
+                    
+                    <div className={`relative z-10 inline-flex items-center justify-center p-4 rounded-xl ${shield.bg} shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                      <shield.icon className="h-8 w-8 text-white" strokeWidth={1.5} />
+                    </div>
                   </div>
+
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#50C878] transition-colors">{shield.title}</h3>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#50C878] transition-colors duration-300">
+                      {shield.title}
+                    </h3>
                     <p className="text-slate-500 leading-relaxed">
                       {shield.description}
                     </p>

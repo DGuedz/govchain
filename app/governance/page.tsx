@@ -3,11 +3,12 @@
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import { ShieldCheck, FilePlus, Loader2, FileText, CheckCircle2, LayoutDashboard, History, ExternalLink, PlayCircle, Gavel, Scale, Coins } from "lucide-react";
+import { useMockWallet } from "@/hooks/useMockWallet";
+import { ShieldCheck, FilePlus, Loader2, FileText, History, ExternalLink, PlayCircle, Gavel, Scale, Coins } from "lucide-react";
 import { OraculoUpload } from "@/components/compound/OraculoUpload";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import {
   Table,
   TableBody,
@@ -63,6 +64,9 @@ const MOCK_DOCS: DocumentRecord[] = [
 
 function GovernanceContent() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const { role, isDeliberative, isFiscal, isLegal, isAdmin, isMiner, isGarimpeiro, isCouncil, loading: roleLoading } = useUserRole();
@@ -74,7 +78,7 @@ function GovernanceContent() {
   // Fetch documents
   useEffect(() => {
     async function fetchDocuments() {
-        if (isDemo) {
+        if (isDemo || !isSupabaseConfigured()) {
             // Simulate network delay
             setTimeout(() => {
                 setDocuments(MOCK_DOCS);
@@ -144,7 +148,7 @@ function GovernanceContent() {
   }
 
   // Auth Check (Bypassed if Demo)
-  if (!account && !isDemo) {
+  if (!activeAddress && !isDemo) {
     return (
         <div className="flex h-[calc(100vh-4rem)] items-center justify-center bg-slate-50">
             <div className="text-center space-y-6 max-w-md px-4">
@@ -225,29 +229,29 @@ function GovernanceContent() {
         {isDemo && (
              <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg flex items-center gap-3 text-sm">
                 <ShieldCheck className="h-5 w-5" />
-                <p><strong>Modo Demonstração Ativo:</strong> Você está visualizando dados fictícios. Nenhuma transação real será realizada.</p>
+                <p><strong>🎓 Ambiente de Treinamento:</strong> Você está seguro para testar. Nenhuma ação aqui afeta documentos oficiais.</p>
                 <Button variant="ghost" size="sm" className="ml-auto text-blue-700 hover:bg-blue-100" onClick={() => router.push("/governance")}>
-                    Sair do Demo
+                    Sair do Treinamento
                 </Button>
             </div>
         )}
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Painel de Governança</h1>
-            <p className="text-slate-500">Gerencie documentos e participe das decisões da cooperativa.</p>
+            <h1 className="text-3xl font-bold text-slate-900">Portal do Cooperado</h1>
+            <p className="text-slate-500">Sua central de transparência e decisões da COOPESMERALDA.</p>
             <div className="flex items-center gap-2 mt-2">
                 {getRoleBadge()}
                 {isDemo && (
-                    <p className="text-sm text-slate-400">
-                        Logado como: <span className="font-mono bg-slate-100 px-1 rounded">0xDemoUser...1234</span> (Visitante)
+                    <p className="text-sm text-slate-400 flex items-center gap-1">
+                        👤 Identidade Digital Conectada: <span className="font-mono bg-slate-100 px-1 rounded">Membro Verificado</span>
                     </p>
                 )}
             </div>
           </div>
           <div className="flex gap-3">
              <Button variant="outline" onClick={() => router.push("/governance/votes" + (isDemo ? "?demo=true" : ""))}>
-                Sala de Votação
+                Minha Voz na Assembleia
              </Button>
           </div>
         </div>
@@ -266,10 +270,10 @@ function GovernanceContent() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Documento</TableHead>
-                                    <TableHead>Hash (SHA-256)</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right">Ações</TableHead>
+                                    <TableHead>Documento Oficial</TableHead>
+                                    <TableHead>Código de Autenticidade</TableHead>
+                                    <TableHead>Situação</TableHead>
+                                    <TableHead className="text-right">Ação</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -288,23 +292,25 @@ function GovernanceContent() {
                                                     {doc.title}
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="font-mono text-xs text-slate-500">
+                                            <TableCell className="font-mono text-xs text-slate-500 flex items-center gap-1">
+                                                <div className="bg-slate-100 p-1 rounded"><ShieldCheck className="h-3 w-3 text-slate-400"/></div>
                                                 {doc.file_hash ? `${doc.file_hash.slice(0, 8)}...` : '-'}
                                             </TableCell>
                                             <TableCell>
                                                 {doc.status === 'attested_onchain' ? (
                                                     <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 flex w-fit items-center gap-1">
-                                                        <CheckCircle2 className="h-3 w-3" />
-                                                        Blockchain
+                                                        <ShieldCheck className="h-3 w-3" />
+                                                        Blindado
                                                     </Badge>
                                                 ) : (
                                                     <Badge variant="secondary">Pendente</Badge>
                                                 )}
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <Button variant="ghost" size="icon" asChild>
-                                                    <a href={`/verify/${isDemo ? '1' : doc.id}`} target="_blank" rel="noopener noreferrer">
+                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0" asChild title="Conferir Original">
+                                                    <a href={`/verify/${doc.id}`} target="_blank" rel="noopener noreferrer">
                                                         <ExternalLink className="h-4 w-4 text-slate-400" />
+                                                        <span className="sr-only">Conferir Original</span>
                                                     </a>
                                                 </Button>
                                             </TableCell>

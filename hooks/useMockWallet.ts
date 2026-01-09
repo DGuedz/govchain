@@ -16,10 +16,12 @@ export function useMockWallet() {
     }
   }, []);
 
-  const connectMock = () => {
+  const connectMock = (noReload = false) => {
     localStorage.setItem(MOCK_WALLET_KEY, MOCK_ADDRESS);
     setMockAddress(MOCK_ADDRESS);
-    window.location.reload(); // Reload to refresh all hooks
+    if (!noReload) {
+      window.location.reload(); // Reload to refresh all hooks
+    }
   };
 
   const disconnectMock = () => {

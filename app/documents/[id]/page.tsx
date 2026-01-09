@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useParams, useSearchParams } from "next/navigation";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { TruthTimeline } from "@/components/compound/TruthTimeline";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,14 +11,62 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, FileText, ExternalLink, ShieldCheck, Download, QrCode } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
+// Mock Data for Demo
+const MOCK_DOCS_MAP: Record<string, any> = {
+    "demo-1": {
+        id: "demo-1",
+        title: "Ata da Assembleia Geral Ordinária 2025",
+        file_url: "#",
+        file_hash: "0x8f9c2d1b7a6e5f4d3c2b1a0987654321fedcba09876543211234567890abcdef",
+        eas_uid: "0x123abc456def7890123abc456def7890123abc456def7890123abc456def7890",
+        status: "attested_onchain",
+        created_at: new Date().toISOString(),
+        signer_wallet: "0x71C...9A21"
+    },
+    "demo-2": {
+        id: "demo-2",
+        title: "Relatório de Sustentabilidade Q4",
+        file_url: "#",
+        file_hash: "0x7e2a9b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        eas_uid: "0x456def789abc0123456def789abc0123456def789abc0123456def789abc0123",
+        status: "attested_onchain",
+        created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+        signer_wallet: "0x3D2...1B4F"
+    },
+    // Generic fallback
+    "demo-generic": {
+        id: "demo-generic",
+        title: "Documento Simulado (Demo)",
+        file_url: "#",
+        file_hash: "0xSimulatedHashForDemoPurposesOnly...",
+        eas_uid: "0xSimulatedUIDForDemoPurposesOnly...",
+        status: "attested_onchain",
+        created_at: new Date().toISOString(),
+        signer_wallet: "0xDemo...Wallet"
+    }
+};
+
 export default function DocumentDetails() {
   const { id } = useParams();
+  const searchParams = useSearchParams();
+  const isDemo = searchParams.get('demo') === 'true' || (typeof id === 'string' && id.startsWith('demo-'));
+  
   const [doc, setDoc] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchDoc() {
       if (!id) return;
+      
+      if (isDemo || !isSupabaseConfigured()) {
+        setTimeout(() => {
+            const mockDoc = MOCK_DOCS_MAP[id as string] || { ...MOCK_DOCS_MAP["demo-generic"], id: id };
+            setDoc(mockDoc);
+            setLoading(false);
+        }, 800);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("documents")
         .select("*")
@@ -60,7 +108,7 @@ export default function DocumentDetails() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="aspect-[16/9] bg-slate-100 rounded flex items-center justify-center border border-dashed border-slate-300">
+                    <div className="aspect-video bg-slate-100 rounded flex items-center justify-center border border-dashed border-slate-300">
                         <p className="text-slate-400 text-sm">Visualização não disponível. Baixe o PDF.</p>
                     </div>
                     <div className="mt-4 flex gap-4">
@@ -136,12 +184,7 @@ export default function DocumentDetails() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <TruthTimeline 
-                        createdAt={doc.created_at} 
-                        signedAt={doc.created_at} // Assuming signed at creation for MVP
-                        attestedAt={doc.eas_uid ? doc.created_at : undefined} // Assuming attested at creation for MVP
-                        uid={doc.eas_uid}
-                    />
+                    <TruthTimeline currentStep={3} />
                 </CardContent>
             </Card>
           </div>

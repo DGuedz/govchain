@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/compound/Navbar";
+import { LayoutNavbar } from "@/components/LayoutNavbar";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
         <ThirdwebProvider>
           <div className="flex min-h-screen flex-col">
-            <Navbar />
+            <LayoutNavbar />
             <div className="flex-1">
               {children}
             </div>

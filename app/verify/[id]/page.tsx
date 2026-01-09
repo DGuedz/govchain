@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { TruthTimeline } from "@/components/compound/TruthTimeline";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, FileText, ExternalLink, ShieldCheck, Download, QrCode, ArrowLeft } from "lucide-react";
+import { Loader2, FileText, ExternalLink, ShieldCheck, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -58,7 +58,7 @@ export default function PublicVerificationPage() {
     async function fetchDoc() {
       if (!id) return;
       
-      if (isDemo) {
+      if (isDemo || !isSupabaseConfigured()) {
         // Simulate fetch
         setTimeout(() => {
             const mockDoc = MOCK_DOCS_MAP[id as string] || { ...MOCK_DOCS_MAP["demo-generic"], id: id };
@@ -196,12 +196,7 @@ export default function PublicVerificationPage() {
                     <CardDescription>Rastreabilidade completa do ativo.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <TruthTimeline 
-                        createdAt={doc.created_at} 
-                        signedAt={doc.created_at} 
-                        attestedAt={doc.eas_uid ? doc.created_at : undefined}
-                        uid={doc.eas_uid}
-                    />
+                    <TruthTimeline currentStep={3} />
                 </CardContent>
             </Card>
           </motion.div>

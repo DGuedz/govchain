@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Vote, Check, X, MinusCircle, PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useActiveAccount } from "thirdweb/react";
+import { useMockWallet } from "@/hooks/useMockWallet";
 
 interface Proposal {
   id: string;
@@ -73,6 +74,9 @@ export default function VoteRoomWrapper() {
 function VoteRoom() {
   const { role, loading: roleLoading, isAdmin: realIsAdmin, isDeliberative } = useUserRole();
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+
   const searchParams = useSearchParams();
   const isDemo = searchParams.get('demo') === 'true';
   const router = useRouter();
@@ -91,7 +95,7 @@ function VoteRoom() {
 
   useEffect(() => {
     fetchProposals();
-  }, [account, isDemo]); // Refetch when account changes
+  }, [activeAddress, isDemo]); // Refetch when account changes
 
   async function fetchProposals() {
     if (isDemo) {
@@ -103,7 +107,7 @@ function VoteRoom() {
         return;
     }
 
-    if (!account) return;
+    if (!activeAddress) return;
 
     try {
       setLoading(true);
@@ -139,8 +143,8 @@ function VoteRoom() {
         let userVote = undefined;
         
         // This is inefficient but works for MVP. Better to have user_id in context.
-        if (account) {
-            const { data: myProfile } = await supabase.from('profiles').select('id').eq('wallet_address', account.address).single();
+        if (activeAddress) {
+            const { data: myProfile } = await supabase.from('profiles').select('id').eq('wallet_address', activeAddress).single();
             if (myProfile) {
                 const myVote = pVotes.find(v => v.user_id === myProfile.id);
                 if (myVote) userVote = myVote.choice;
@@ -235,7 +239,7 @@ function VoteRoom() {
   }
 
   // Redirect if not logged in and not demo
-  if (!account && !isDemo && !loading) {
+  if (!activeAddress && !isDemo && !loading) {
      // In a real app we might redirect or show login. 
      // Since the parent page handles login, maybe we just show a message or redirect back.
      // For now, let's just show a simple unauthorized message or button to demo.

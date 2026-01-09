@@ -3,6 +3,9 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { StatsSection } from "@/components/landing/StatsSection";
 import { TripleShieldSection } from "@/components/landing/TripleShieldSection";
 import { Footer } from "@/components/landing/Footer";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -20,8 +23,16 @@ export default function Home() {
               Pronto para blindar a gestão?
             </h2>
             <p className="text-slate-500 text-lg">
-              Faça parte da revolução da Mineração Inteligente. Acesse o GovChain agora e garanta que cada decisão tenha força de lei e alcance global.
+              Faça parte da revolução da Mineração Inteligente. Acesse o Gov.Chain agora e garanta que cada decisão tenha força de lei e alcance global.
             </p>
+            <div className="pt-4 flex justify-center">
+              <Button asChild size="lg" className="bg-[#50C878] hover:bg-[#40b068] text-white font-semibold h-14 px-8 rounded-full shadow-lg shadow-emerald-200/50 transition-all hover:scale-105">
+                <Link href="/login">
+                  Acessar Sistema
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

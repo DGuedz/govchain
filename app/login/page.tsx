@@ -19,10 +19,9 @@ export default function LoginPage() {
   const [verificationStep, setVerificationStep] = useState(0);
 
   const handleGovBrLogin = async () => {
-    if (!account) {
-      toast.error("Por favor, conecte sua carteira primeiro.");
-      return;
-    }
+    // --- DEV NET BYPASS ---
+    // Se não tiver carteira conectada, simula o fluxo completo para demonstração.
+    const isSimulation = !account;
 
     setShowGovBrDialog(true);
     setIsVerifying(true);
@@ -35,17 +34,22 @@ export default function LoginPage() {
     setTimeout(async () => {
       // Step 4: Complete
       try {
-        // Update profile in Supabase
-        const { error } = await supabase
-          .from("profiles")
-          .upsert({
-            wallet_address: account.address,
-            role: 'garimpeiro', // Default Tier 3 Role
-            verified_govbr: true,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'wallet_address' });
+        if (!isSimulation && account) {
+            // Update profile in Supabase (Real Mode)
+            const { error } = await supabase
+            .from("profiles")
+            .upsert({
+                wallet_address: account.address,
+                role: 'garimpeiro', // Default Tier 3 Role
+                verified_govbr: true,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'wallet_address' });
 
-        if (error) throw error;
+            if (error) throw error;
+        } else {
+            // DEV NET: Ativar carteira mock sem recarregar a página (o router.push fará a navegação)
+            connectMock(true);
+        }
 
         toast.success("Identidade Gov.br validada com sucesso!");
         router.push("/governance");

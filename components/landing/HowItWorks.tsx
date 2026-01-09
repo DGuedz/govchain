@@ -7,37 +7,40 @@ import Link from "next/link";
 const steps = [
   {
     icon: <FileText className="h-8 w-8 text-blue-600" />,
-    title: "1. O Oráculo de Origem",
-    description: "A Secretaria digitaliza a Ata ou Relatório no portal seguro. O sistema prepara o ativo digital.",
+    title: "1. Digitalização",
+    description: "O sistema GOV.Chain sobe a ata, documento oficial ou o laudo no sistema.",
     color: "bg-blue-50 border-blue-100",
+    glowColor: "bg-blue-500",
     href: "/governance"
   },
   {
     icon: <PenTool className="h-8 w-8 text-[#50C878]" />,
-    title: "2. Assinatura com Validade Legal",
-    description: "A autenticação via Gov.br confere validade jurídica (ICP-Brasil) e identifica os responsáveis.",
+    title: "2. Assinatura",
+    description: "Você assina pelo celular usando sua conta Gov.br, com validade jurídica total.",
     color: "bg-emerald-50 border-emerald-100",
+    glowColor: "bg-[#50C878]",
     href: "/protocolo"
   },
   {
     icon: <Database className="h-8 w-8 text-purple-600" />,
-    title: "3. O Selo de Verdade Eterna",
-    description: "O hash criptográfico é gravado na Blockchain (EAS), criando uma prova matemática imutável.",
+    title: "3. Garantia",
+    description: "O sistema gera um selo eterno de autenticidade que blinda o documento para sempre.",
     color: "bg-purple-50 border-purple-100",
+    glowColor: "bg-purple-500",
     href: "/public"
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section id="como-funciona" className="py-24 bg-white relative overflow-hidden">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-slate-900">
-            Como funciona o <span className="text-[#50C878]">GovChain</span>
+            Simples como deve ser.
           </h2>
           <p className="mx-auto max-w-[700px] text-slate-500 md:text-lg">
-            Um fluxo desenhado para eliminar o "Ciúme Político" através da transparência radical e proteger o CPF dos gestores.
+            Sem burocracia, sem papelada, com segurança máxima.
           </p>
         </div>
 
@@ -55,6 +58,9 @@ export function HowItWorks() {
               className="relative flex flex-col items-center text-center space-y-4"
             >
               <Link href={step.href} className="group relative">
+                {/* Aura/Glow Effect */}
+                <div className={`absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 ${step.glowColor}`} />
+                
                 <div className={`relative z-10 flex items-center justify-center w-24 h-24 rounded-2xl border-2 ${step.color} shadow-sm bg-white transition-transform group-hover:scale-105 duration-300`}>
                   {step.icon}
                   <div className="absolute -bottom-3 bg-white px-2 py-0.5 rounded-full border text-xs font-bold text-slate-400 shadow-sm">

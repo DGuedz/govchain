@@ -1,108 +1,42 @@
-# GovChain | Protocolo da Verdade Híbrida
 
-![Status](https://img.shields.io/badge/Status-Em_Desenvolvimento-emerald?style=for-the-badge)
-![License](https://img.shields.io/badge/License-Proprietary-blue?style=for-the-badge)
-![Tech](https://img.shields.io/badge/Stack-Next.js_14_|_XRPL_|_Supabase-black?style=for-the-badge)
+## 🚀 Operação Gênese: Inauguração do Sistema
 
-> **Sistema de Governança Institucional e Liquidação Transparente para a COOPERSMERALDA.**
+Este guia descreve o processo de deploy e o ritual de inauguração do **GovChain** com o registro do primeiro documento oficial.
 
-O **GovChain** é uma plataforma descentralizada (dApp) que implementa a "Tripla Blindagem" de documentos e processos decisórios, garantindo integridade matemática, jurídica e social para a cooperativa.
+### 1. Deploy em Produção (Vercel)
+
+Para colocar o sistema no ar e torná-lo acessível globalmente:
+
+1.  Acesse [Vercel.com](https://vercel.com) e faça login.
+2.  Clique em **"Add New Project"**.
+3.  Importe o repositório do GitHub: `COOPERSMERALDA/elos`.
+4.  Configure as Variáveis de Ambiente (`Environment Variables`):
+    *   `NEXT_PUBLIC_SUPABASE_URL`: (Sua URL do Supabase)
+    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`: (Sua Key Anon)
+    *   `NEXT_PUBLIC_THIRDWEB_CLIENT_ID`: (Seu Client ID)
+5.  Clique em **Deploy**.
+
+O sistema estará acessível em `https://elos-govchain.vercel.app` (ou domínio similar).
+
+### 2. Ritual de Gênese (Ata Marco Zero)
+
+Após o deploy, realize o seguinte procedimento para inaugurar a Blockchain:
+
+1.  **Geração do Documento:**
+    *   Utilize o arquivo `docs/ATA_MARCO_ZERO.md` como base.
+    *   Converta-o para PDF (Sugestão: Pandoc ou Editor Markdown).
+2.  **Login Admin:**
+    *   Acesse a rota `/governance` com a carteira do Presidente (Leonardo).
+3.  **Upload Solene:**
+    *   Clique em "Novo Documento".
+    *   Selecione o PDF da Ata.
+    *   Assine digitalmente.
+4.  **Validação:**
+    *   Aguarde a confirmação da transação na Blockchain.
+    *   Copie o ID gerado (Hash).
+5.  **Prova de Vida:**
+    *   Acesse `/verify/[ID_DA_ATA]` em um dispositivo móvel.
+    *   Apresente a "Verdade Imutável" ao Conselho.
 
 ---
-
-## 🏛️ Arquitetura da Tripla Blindagem
-
-O coração do sistema opera através de um fluxo de validação em três etapas, garantindo que nenhum documento possa ser alterado retroativamente sem detecção.
-
-```mermaid
-graph TD
-    subgraph Oráculo de Origem [1. Verdade Material]
-        A[Documento PDF Original] -->|Upload Seguro| B(Aplicação de Marca D'água)
-        B -->|Metadados: Autor/Data| C[PDF Blindado]
-    end
-
-    subgraph Verdade Matemática [2. Integridade]
-        C -->|Hashing SHA-256| D{Gerar Hash Único}
-        D -->|Identidade Digital| E[Fingerprint do Documento]
-    end
-
-    subgraph Verdade Eterna [3. Imutabilidade]
-        E -->|Transação On-Chain| F[Registro no EAS / XRPL]
-        E -->|Persistência| G[Supabase Storage]
-        F -->|Timestamp & Assinatura| H[Comprovante de Autenticidade]
-    end
-
-    G -.-> H
-```
-
-## ✨ Funcionalidades Principais
-
-### 1. Governança & Compliance
-- **Upload Blindado**: Registro de Atas, Pautas e Contratos com carimbo de tempo on-chain.
-- **Auditoria em Tempo Real**: O Conselho Fiscal possui acesso a um painel de verificação independente.
-- **Validação Jurídica**: Fluxo de aprovação de templates e pareceres pelo Conselho Jurídico.
-
-### 2. Gestão Financeira (DeFi)
-- **Split de Pagamentos**: Divisão automática de receitas entre Cooperativa e Garimpeiros.
-- **Liquidação D+0**: Uso de trilhos cripto (RLUSD/XRP) para pagamentos instantâneos.
-- **Escrow Automatizado**: Garantia de fundos via Smart Contracts (XRPL Escrow).
-
-### 3. Identidade & Acesso (RBAC)
-Sistema granular de permissões baseado em **Roles** (Cargos):
-- `Admin`: Conselho Deliberativo (Gestão Total).
-- `Fiscal`: Auditoria e Visualização de Saldos.
-- `Legal`: Validação de Contratos e Compliance.
-- `Member`: Votação e Consulta.
-
-## 🛠️ Stack Tecnológica
-
-| Camada | Tecnologia | Função |
-|--------|------------|--------|
-| **Frontend** | Next.js 14 (App Router) | Interface Reativa e SSR |
-| **UI/UX** | Shadcn/UI + Tailwind | Design System Institucional |
-| **Web3** | Thirdweb SDK | Conexão de Carteiras e Smart Contracts |
-| **Backend** | Supabase | Banco de Dados Relacional e Auth |
-| **Blockchain** | XRPL / Base Sepolia | Camada de Liquidação e Registro |
-
-## 🚀 Como Executar Localmente
-
-### Pré-requisitos
-- Node.js 18+
-- Chaves de API (Supabase, Thirdweb) configuradas.
-
-### Instalação
-
-1. **Clone o repositório**
-   ```bash
-   git clone https://github.com/seu-org/govchain.git
-   cd elos
-   ```
-
-2. **Instale as dependências**
-   ```bash
-   npm install
-   ```
-
-3. **Configure o Ambiente**
-   Duplique o arquivo de exemplo e preencha com suas chaves:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-
-4. **Inicie o Servidor**
-   ```bash
-   npm run dev
-   ```
-   Acesse: `http://localhost:3000` (ou porta indicada no terminal).
-
-## 🔐 Segurança e Compliance
-
-Este projeto segue rigorosos padrões de segurança:
-- **Zero-Knowledge Logs**: Nenhuma chave privada é logada no servidor.
-- **Isolamento de Segredos**: Uso estrito de variáveis de ambiente não versionadas.
-- **RBAC Nativo**: Permissões validadas tanto no Frontend quanto nas Security Rules do Banco de Dados.
-
-## 📄 Licença
-
-Todos os direitos reservados à **COOPERSMERALDA**.
-O código fonte é proprietário e seu uso não autorizado é proibido.
+**"A verdade oficial reside na intersecção entre a assinatura Gov.br e o registro na Blockchain."**
