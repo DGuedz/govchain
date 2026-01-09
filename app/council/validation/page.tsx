@@ -14,6 +14,9 @@ import { Badge } from "@/components/ui/badge";
 
 export default function ValidationDashboard() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+  
   const router = useRouter();
   const { role, isCouncil, loading: roleLoading } = useUserRole();
   

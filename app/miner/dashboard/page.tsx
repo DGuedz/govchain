@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter } from "next/navigation";
+import { useMockWallet } from "@/hooks/useMockWallet";
 import { supabase } from "@/lib/supabase";
 import { useUserRole } from "@/hooks/useUserRole";
-import { useMockWallet } from "@/hooks/useMockWallet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,9 @@ import { Badge } from "@/components/ui/badge";
 
 export default function MinerDashboard() {
   const account = useActiveAccount();
+  const { mockAddress, isConnected: isMockConnected } = useMockWallet();
+  const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
+
   const router = useRouter();
   const { role, isMiner, loading: roleLoading } = useUserRole();
   

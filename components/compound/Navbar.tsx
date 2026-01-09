@@ -64,9 +64,9 @@ export function Navbar() {
           {!account && !isMockConnected && (
              <Button 
                variant="outline" 
-               size="sm" 
-               onClick={connectMock}
-               className="hidden md:flex border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
+              size="sm" 
+              onClick={() => connectMock()}
+              className="hidden md:flex border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
              >
                <TestTube className="mr-2 h-4 w-4" />
                Simular Acesso

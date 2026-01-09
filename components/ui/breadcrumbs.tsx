@@ -6,11 +6,12 @@ interface BreadcrumbsProps {
     label: string;
     href?: string;
   }[];
+  className?: string;
 }
 
-export function Breadcrumbs({ items }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
   return (
-    <nav className="flex items-center text-sm text-slate-500 mb-6">
+    <nav className={`flex items-center text-sm text-slate-500 mb-6 ${className}`}>
       <Link href="/" className="hover:text-[#50C878] transition-colors">
         <Home className="h-4 w-4" />
       </Link>

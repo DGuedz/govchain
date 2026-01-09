@@ -2,15 +2,17 @@
 "use client";
 
 import { useActiveAccount } from "thirdweb/react";
+import { useMockWallet } from "@/hooks/useMockWallet";
 import { OraculoUpload } from "@/components/compound/OraculoUpload";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShieldCheck, Lock } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
 import { useUserRole } from "@/hooks/useUserRole";
+import { Loader2 } from "lucide-react";
 
-export default function OraclePage() {
+function OracleContent() {
   const account = useActiveAccount();
   const { mockAddress, isConnected: isMockConnected } = useMockWallet();
   const activeAddress = account?.address || (isMockConnected ? mockAddress : null);
@@ -89,5 +91,13 @@ export default function OraclePage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function OraclePage() {
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center"><Loader2 className="animate-spin text-purple-500" /></div>}>
+      <OracleContent />
+    </Suspense>
   );
 }
