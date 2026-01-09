@@ -9,14 +9,14 @@ Para colocar o sistema no ar e torná-lo acessível globalmente:
 
 1.  Acesse [Vercel.com](https://vercel.com) e faça login.
 2.  Clique em **"Add New Project"**.
-3.  Importe o repositório do GitHub: `COOPERSMERALDA/elos`.
+3.  Importe o repositório do GitHub: `COOPERSMERALDA/govchain`.
 4.  Configure as Variáveis de Ambiente (`Environment Variables`):
     *   `NEXT_PUBLIC_SUPABASE_URL`: (Sua URL do Supabase)
     *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`: (Sua Key Anon)
     *   `NEXT_PUBLIC_THIRDWEB_CLIENT_ID`: (Seu Client ID)
 5.  Clique em **Deploy**.
 
-O sistema estará acessível em `https://elos-govchain.vercel.app` (ou domínio similar).
+O sistema estará acessível em `https://govchain.vercel.app` (ou domínio similar).
 
 ### 2. Ritual de Gênese (Ata Marco Zero)
 

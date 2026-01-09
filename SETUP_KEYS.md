@@ -21,7 +21,7 @@ Para salvar documentos e votos, precisamos do Supabase.
 4. Copie a **Project URL** e a **anon public key**.
 
 ## 3. Atualize o Arquivo `.env.local`
-Abra o arquivo `.env.local` na raiz da pasta `elos` e cole suas chaves:
+Abra o arquivo `.env.local` na raiz da pasta `govchain` e cole suas chaves:
 
 ```bash
 # ThirdWeb (Obrigatório para Login)

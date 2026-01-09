@@ -6,13 +6,13 @@
 - [ ] Confirmar se o arquivo `docs/ATA_MARCO_ZERO.md` está atualizado.
 
 ## 2. Configuração na Vercel
-- [ ] Criar novo projeto importando o repositório `COOPERSMERALDA/elos`.
+- [ ] Criar novo projeto importando o repositório `COOPERSMERALDA/govchain`.
 - [ ] Configurar Variáveis de Ambiente (Environment Variables):
     - `NEXT_PUBLIC_SUPABASE_URL`
     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
     - `NEXT_PUBLIC_THIRDWEB_CLIENT_ID`
     - `NEXT_PUBLIC_CHAIN_ID` (Definir como `84532` para Base Sepolia ou Mainnet correspondente)
-- [ ] Definir Root Directory como `elos` (se o repositório conter a pasta raiz).
+- [ ] Definir Root Directory como `govchain` (se o repositório conter a pasta raiz).
 
 ## 3. Pós-Deploy (Verificação)
 - [ ] Acessar a URL de produção (ex: `https://govchain.vercel.app`).

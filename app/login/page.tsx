@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useActiveAccount } from "thirdweb/react";
 import { supabase } from "@/lib/supabase";
+import { useMockWallet } from "@/hooks/useMockWallet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -13,6 +14,7 @@ import { toast } from "sonner";
 export default function LoginPage() {
   const router = useRouter();
   const account = useActiveAccount();
+  const { connectMock } = useMockWallet();
   
   const [isVerifying, setIsVerifying] = useState(false);
   const [showGovBrDialog, setShowGovBrDialog] = useState(false);
