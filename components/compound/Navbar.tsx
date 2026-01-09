@@ -38,9 +38,9 @@ export function Navbar() {
         {/* Logo / Brand */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="relative h-10 w-10">
+            <div className="relative h-12 w-12">
               <Image 
-                src="/logo.jpg" 
+                src="/govchain-logo.png" 
                 alt="GovChain Logo" 
                 fill
                 className="object-contain"

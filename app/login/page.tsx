@@ -71,9 +71,9 @@ export default function LoginPage() {
     <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full shadow-lg border-emerald-100">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-24 h-24 relative mb-2">
+          <div className="mx-auto w-32 h-32 relative mb-2">
             <Image 
-              src="/logo.jpg" 
+              src="/govchain-logo.png" 
               alt="COOPESMERALDA Logo" 
               fill
               className="object-contain"

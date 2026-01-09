@@ -67,12 +67,12 @@ function OracleContent() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-            <div className="p-3 bg-purple-100 rounded-xl relative h-16 w-16">
+            <div className="p-3 bg-purple-100 rounded-xl relative h-20 w-20">
                 <Image 
-                  src="/logo.jpg" 
+                  src="/govchain-logo.png" 
                   alt="GovChain Logo" 
                   fill
-                  className="object-contain p-1"
+                  className="object-contain"
                 />
             </div>
             <div>

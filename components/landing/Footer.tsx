@@ -14,9 +14,9 @@ export function Footer() {
           <div className="lg:col-span-1 space-y-6">
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="relative h-10 w-10">
+                <div className="relative h-16 w-16">
                   <Image 
-                    src="/logo.jpg" 
+                    src="/govchain-logo.png" 
                     alt="GovChain Logo" 
                     fill
                     className="object-contain"

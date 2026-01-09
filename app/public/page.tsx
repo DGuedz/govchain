@@ -143,9 +143,9 @@ function PublicTransparencyPage() {
           className="text-center mb-12 space-y-4"
         >
           <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800 gap-2">
-            <div className="relative h-4 w-4">
+            <div className="relative h-6 w-6">
               <Image 
-                src="/logo.jpg" 
+                src="/govchain-logo.png" 
                 alt="Logo" 
                 fill
                 className="object-contain"

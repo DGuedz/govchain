@@ -22,9 +22,9 @@ export function HeroSection() {
             transition={{ duration: 0.5 }}
             className="inline-flex items-center rounded-full border border-emerald-200 bg-white/50 backdrop-blur-sm px-3 py-1 text-sm font-medium text-emerald-800 mb-4 shadow-sm gap-2"
           >
-            <div className="relative h-4 w-4">
+            <div className="relative h-6 w-6">
               <Image 
-                src="/logo.jpg" 
+                src="/govchain-logo.png" 
                 alt="Logo" 
                 fill
                 className="object-contain"
