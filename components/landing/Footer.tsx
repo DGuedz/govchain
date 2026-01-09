@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ShieldCheck, MapPin, Phone, Linkedin, Instagram, Youtube, ArrowRight, Lock, Activity } from "lucide-react";
+import Image from "next/image";
+import { MapPin, Phone, Linkedin, Instagram, Youtube, ArrowRight, Lock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -13,8 +14,13 @@ export function Footer() {
           <div className="lg:col-span-1 space-y-6">
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">
-                <div className="bg-[#50C878] p-1.5 rounded-lg">
-                  <ShieldCheck className="text-white h-6 w-6" />
+                <div className="relative h-10 w-10">
+                  <Image 
+                    src="/logo.jpg" 
+                    alt="GovChain Logo" 
+                    fill
+                    className="object-contain"
+                  />
                 </div>
                 <span className="font-bold text-xl text-white tracking-tight">
                   Gov.Chain

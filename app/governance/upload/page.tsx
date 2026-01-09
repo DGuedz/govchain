@@ -6,6 +6,7 @@ import { useMockWallet } from "@/hooks/useMockWallet";
 import { OraculoUpload } from "@/components/compound/OraculoUpload";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShieldCheck, Lock } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { toast } from "sonner";
@@ -66,8 +67,13 @@ function OracleContent() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-            <div className="p-3 bg-purple-100 rounded-xl">
-                <ShieldCheck className="h-8 w-8 text-purple-600" />
+            <div className="p-3 bg-purple-100 rounded-xl relative h-16 w-16">
+                <Image 
+                  src="/logo.jpg" 
+                  alt="GovChain Logo" 
+                  fill
+                  className="object-contain p-1"
+                />
             </div>
             <div>
                 <h1 className="text-3xl font-bold text-slate-900">O Oráculo</h1>

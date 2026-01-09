@@ -4,7 +4,8 @@ import { client, chain } from "@/lib/thirdweb";
 import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import Link from "next/link";
-import { ShieldCheck, TestTube } from "lucide-react";
+import Image from "next/image";
+import { TestTube } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useMockWallet } from "@/hooks/useMockWallet";
@@ -37,8 +38,14 @@ export function Navbar() {
         {/* Logo / Brand */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-[#50C878] p-1.5 rounded-lg">
-              <ShieldCheck className="text-white h-5 w-5" />
+            <div className="relative h-10 w-10">
+              <Image 
+                src="/logo.jpg" 
+                alt="GovChain Logo" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
             <span className="font-bold text-lg text-slate-900 tracking-tight">
               GOV.CHAIN

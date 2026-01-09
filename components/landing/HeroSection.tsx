@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShieldCheck, FileText, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -19,9 +20,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center rounded-full border border-emerald-200 bg-white/50 backdrop-blur-sm px-3 py-1 text-sm font-medium text-emerald-800 mb-4 shadow-sm"
+            className="inline-flex items-center rounded-full border border-emerald-200 bg-white/50 backdrop-blur-sm px-3 py-1 text-sm font-medium text-emerald-800 mb-4 shadow-sm gap-2"
           >
-            <ShieldCheck className="mr-2 h-4 w-4" />
+            <div className="relative h-4 w-4">
+              <Image 
+                src="/logo.jpg" 
+                alt="Logo" 
+                fill
+                className="object-contain"
+              />
+            </div>
             <span className="hidden sm:inline">Segurança Oficial & Valorização do Minerador</span>
             <span className="sm:hidden">Segurança & Valor</span>
           </motion.div>

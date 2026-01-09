@@ -8,7 +8,8 @@ import { useMockWallet } from "@/hooks/useMockWallet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2, CheckCircle2, ShieldCheck, User } from "lucide-react";
+import { Loader2, CheckCircle2, User } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -70,8 +71,14 @@ export default function LoginPage() {
     <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full shadow-lg border-emerald-100">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto bg-emerald-100 p-3 rounded-full w-fit">
-            <ShieldCheck className="h-10 w-10 text-emerald-700" />
+          <div className="mx-auto w-24 h-24 relative mb-2">
+            <Image 
+              src="/logo.jpg" 
+              alt="COOPESMERALDA Logo" 
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
           <CardTitle className="text-2xl font-bold text-slate-900">Acesso GovChain</CardTitle>
           <CardDescription>

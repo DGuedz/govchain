@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Search, FileText, ShieldCheck, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
@@ -141,8 +142,15 @@ function PublicTransparencyPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12 space-y-4"
         >
-          <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">
-            <ShieldCheck className="mr-2 h-4 w-4" />
+          <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800 gap-2">
+            <div className="relative h-4 w-4">
+              <Image 
+                src="/logo.jpg" 
+                alt="Logo" 
+                fill
+                className="object-contain"
+              />
+            </div>
             Portal da Transparência
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">

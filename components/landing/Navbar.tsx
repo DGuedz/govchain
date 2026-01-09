@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -32,8 +33,14 @@ export function Navbar() {
         <div className="container px-4 md:px-6 mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className={`p-1.5 rounded-lg transition-colors duration-300 ${isScrolled ? "bg-[#50C878]" : "bg-white/90"}`}>
-              <ShieldCheck className={`h-6 w-6 ${isScrolled ? "text-white" : "text-[#50C878]"}`} />
+            <div className="relative h-10 w-10">
+              <Image 
+                src="/logo.jpg" 
+                alt="GovChain Logo" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
             <span className={`font-bold text-xl tracking-tight transition-colors duration-300 ${isScrolled ? "text-slate-900" : "text-slate-900"}`}>
               Gov.Chain
