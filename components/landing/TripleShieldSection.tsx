@@ -31,7 +31,7 @@ const shields = [
 export function TripleShieldSection() {
   return (
     <section id="beneficios" className="py-24 bg-slate-50 relative overflow-hidden">
-      <div className="container px-4 md:px-6 mx-auto">
+      <div className="container px-4 lg:px-24 mx-auto">
         <div className="text-center mb-16 space-y-4">
           <div className="inline-block rounded-lg bg-emerald-100 px-3 py-1 text-sm text-emerald-800 font-semibold mb-2">
             Segurança Institucional

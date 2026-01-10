@@ -13,7 +13,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/40 via-transparent to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-100/40 via-transparent to-transparent" />
 
-      <div className="container px-4 md:px-6 mx-auto relative z-10">
+      <div className="container px-4 lg:px-24 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center space-y-8">
           
           <motion.div 
@@ -46,7 +46,7 @@ export function HeroSection() {
                 COOPESMERALDA
               </span>
             </h1>
-            <p className="mx-auto max-w-[800px] text-slate-600 md:text-xl leading-relaxed">
+            <p className="mx-auto max-w-[800px] text-slate-600 text-lg md:text-xl leading-relaxed px-4">
               Mais segurança para o seu trabalho, mais valor para a sua pedra. 
               O sistema oficial que conecta o minerador ao mercado global com garantia total de origem.
             </p>
@@ -56,16 +56,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+            className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto px-4 sm:px-0"
           >
-            <Button asChild size="lg" className="bg-[#50C878] hover:bg-[#40b068] text-white font-semibold h-14 px-8 rounded-full shadow-lg shadow-emerald-200/50 w-full sm:w-auto transition-all hover:scale-105">
-              <Link href="/login">
+            <Button asChild size="lg" className="bg-[#50C878] hover:bg-[#40b068] text-white font-semibold h-14 min-h-[44px] px-8 rounded-full shadow-lg shadow-emerald-200/50 w-full sm:w-auto transition-all hover:scale-105">
+              <Link href="/login" className="flex items-center justify-center">
                 Entrar com Gov.br
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-slate-200 text-slate-700 hover:bg-white hover:text-[#50C878] hover:border-[#50C878] w-full sm:w-auto bg-white/50 backdrop-blur-sm">
-              <Link href="/kyc">
+            <Button asChild variant="outline" size="lg" className="h-14 min-h-[44px] px-8 rounded-full border-slate-200 text-slate-700 hover:bg-white hover:text-[#50C878] hover:border-[#50C878] w-full sm:w-auto bg-white/50 backdrop-blur-sm">
+              <Link href="/kyc" className="flex items-center justify-center">
                 Quero me Associar
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Link>
