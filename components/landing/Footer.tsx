@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-300 py-16 border-t border-slate-900 font-sans">
+    <footer className="bg-emerald-950 text-emerald-100/80 py-16 border-t border-emerald-900 font-sans">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
           
@@ -30,18 +30,18 @@ export function Footer() {
                 Powered by GEMLAB
               </span>
             </div>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-emerald-200/60 leading-relaxed">
               A COOPESMERALDA lidera a Mineração Regenerativa 4.0. Através do Gov.Chain, transformamos a riqueza de Campos Verdes em ativos digitais imutáveis (RWA). Unimos a legitimidade do Gov.br à segurança da Blockchain para garantir a Tripla Blindagem: Origem Auditável, Segurança Jurídica e Inclusão Social. Mais que pedras, mineramos confiança.
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
-                <Instagram className="h-4 w-4 text-slate-400 group-hover:text-white transition-colors" />
+              <div className="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
+                <Instagram className="h-4 w-4 text-emerald-200/60 group-hover:text-white transition-colors" />
               </div>
-              <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
-                <Linkedin className="h-4 w-4 text-slate-400 group-hover:text-white transition-colors" />
+              <div className="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
+                <Linkedin className="h-4 w-4 text-emerald-200/60 group-hover:text-white transition-colors" />
               </div>
-              <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
-                <Youtube className="h-4 w-4 text-slate-400 group-hover:text-white transition-colors" />
+              <div className="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center hover:bg-[#50C878] transition-colors cursor-pointer group">
+                <Youtube className="h-4 w-4 text-emerald-200/60 group-hover:text-white transition-colors" />
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li><Link href="/kyc" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Portal do Cooperado</Link></li>
               <li><Link href="/public" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Rastreabilidade Pública</Link></li>
-              <li><a href="https://easscan.org" target="_blank" rel="noopener noreferrer" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Explorer GEMLAB</a></li>
+              <li><Link href="/gemlab" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Explorer GEMLAB</Link></li>
               <li><Link href="/verify" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Validar Certificado</Link></li>
             </ul>
           </div>
@@ -71,14 +71,27 @@ export function Footer() {
           {/* Newsletter / Contact Column */}
           <div className="space-y-6">
             <h4 className="text-white font-semibold tracking-wide uppercase text-xs">Conexão com o Mercado</h4>
-            <div className="space-y-2">
+            <div className="space-y-3">
                 <p className="text-sm font-medium text-emerald-400">Newsletter "O Brilho do Verde"</p>
-                <p className="text-xs text-slate-400">Receba cotações do quilate, atualizações do Underground Vault e novidades do projeto "Mãos de Pedra".</p>
+                <div className="text-xs text-emerald-200/60 space-y-2 leading-relaxed">
+                    <p>Conecte-se à inteligência da Mineração 4.0. Associe-se e receba insights exclusivos do Oráculo da COOPESMERALDA:</p>
+                    <ul className="space-y-2 mt-2">
+                        <li className="leading-snug">
+                            <strong className="text-emerald-300 font-semibold">Mercado:</strong> Cotação atualizada do quilate e tendências de ativos RWA.
+                        </li>
+                        <li className="leading-snug">
+                            <strong className="text-emerald-300 font-semibold">Transparência:</strong> Relatórios de auditoria da Coopesmeraldas e validações na Blockchain.
+                        </li>
+                        <li className="leading-snug">
+                            <strong className="text-emerald-300 font-semibold">Impacto:</strong> Acompanhe a transformação social do projeto 'Mãos de Pedra'.
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div className="flex gap-2">
               <Input 
                 placeholder="Seu e-mail corporativo" 
-                className="bg-slate-900 border-slate-800 text-slate-300 focus:border-[#50C878] h-10 text-sm"
+                className="bg-emerald-900/50 border-emerald-800 text-emerald-100 focus:border-[#50C878] h-10 text-sm placeholder:text-emerald-200/40"
               />
               <Button size="sm" className="bg-[#50C878] hover:bg-[#40b068] text-white">
                 <ArrowRight className="h-4 w-4" />
@@ -88,16 +101,16 @@ export function Footer() {
         </div>
         
         {/* Bottom Bar - Extended */}
-        <div className="pt-8 border-t border-slate-900 space-y-6">
+        <div className="pt-8 border-t border-emerald-900 space-y-6">
             
             {/* Row 1: Address & Contact */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs text-slate-500">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs text-emerald-200/60">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <div className="flex items-center gap-2">
                         <MapPin className="h-3 w-3 text-[#50C878]" />
                         <span>Av. Costelão, S/N, Q. 02, Lt. 01, Setor Central, Campos Verdes - GO | CEP: 76.515-000</span>
                     </div>
-                    <div className="hidden sm:block w-px h-3 bg-slate-800"></div>
+                    <div className="hidden sm:block w-px h-3 bg-emerald-800"></div>
                     <div className="flex items-center gap-2">
                         <Phone className="h-3 w-3 text-[#50C878]" />
                         <span>(62) 8150-1015 | coopesmeraldacamposverdes@gmail.com</span>
