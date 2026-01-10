@@ -66,7 +66,7 @@ function OracleContent() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex flex-col sm:flex-row items-center gap-3 mb-8 text-center sm:text-left">
             <div className="p-3 bg-purple-100 rounded-xl relative h-20 w-20">
                 <Image 
                   src="/govchain-logo.png" 

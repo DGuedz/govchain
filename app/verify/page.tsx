@@ -6,7 +6,6 @@ import { Search, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Navbar } from "@/components/compound/Navbar";
 import { Footer } from "@/components/landing/Footer";
 
 export default function VerifySearchPage() {
@@ -22,7 +21,6 @@ export default function VerifySearchPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
       
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg border-slate-200">
