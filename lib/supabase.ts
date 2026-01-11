@@ -14,7 +14,7 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const isSupabaseConfigured = () => {
   if (!supabaseUrl || supabaseUrl === "" || supabaseUrl === "undefined") return false;
-  return supabaseUrl !== "https://placeholder.supabase.co";
+  return !supabaseUrl.includes("placeholder.supabase.co");
 };
 
 export const supabase = createClient(

@@ -7,9 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle2, ShieldCheck, Pickaxe, Search, ArrowRight, Loader2 } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Pickaxe, Search, ArrowRight, Loader2, Factory } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
+import { hybridStorage } from "@/lib/hybridStorage";
 import { useActiveAccount } from "thirdweb/react";
 import { useMockWallet } from "@/hooks/useMockWallet";
 
@@ -30,7 +30,9 @@ export default function KYCPage() {
     cpf: "",
     phone: "",
     miningLicense: "", // Miner only
-    councilToken: "" // Council only
+    councilToken: "", // Council only
+    address: "", // Processor only
+    capacity: "" // Processor only
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +40,7 @@ export default function KYCPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleRegister = async (tier: 'garimpeiro' | 'miner' | 'council') => {
+  const handleRegister = async (tier: 'garimpeiro' | 'miner' | 'council' | 'processor') => {
     if (!activeAddress) {
         toast.error("Por favor, conecte sua carteira primeiro ou use o modo Simulação.");
         return;
@@ -73,6 +75,19 @@ export default function KYCPage() {
             // For now, we assume validation passed.
         }
 
+        if (tier === 'processor') {
+            if (!formData.address || !formData.capacity) {
+                toast.error("Endereço e Capacidade são obrigatórios.");
+                setIsSubmitting(false);
+                return;
+            }
+            // Storing in metadata for flexibility
+            profileData.metadata = {
+                address: formData.address,
+                capacity: formData.capacity
+            };
+        }
+
         if (tier === 'council') {
             if (formData.councilToken !== 'ELOS-ADMIN-KEY') { // Hardcoded check for MVP
                 toast.error("Token de Conselho inválido.");
@@ -81,9 +96,8 @@ export default function KYCPage() {
             }
         }
 
-        const { error } = await supabase
-            .from('profiles')
-            .upsert(profileData, { onConflict: 'wallet_address' });
+        const table = await hybridStorage.from('profiles');
+        const { error } = await table.upsert(profileData, { onConflict: 'wallet_address' });
 
         if (error) throw error;
 
@@ -111,26 +125,33 @@ export default function KYCPage() {
         </div>
 
         <Tabs defaultValue="garimpeiro" className="w-full" onValueChange={setSelectedTier}>
-          <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-slate-200 rounded-xl">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto p-1 bg-slate-200 rounded-xl gap-1 md:gap-0">
             <TabsTrigger value="garimpeiro" className="py-4 data-[state=active]:bg-emerald-600 data-[state=active]:text-white rounded-lg transition-all">
                 <div className="flex flex-col items-center gap-2">
                     <Search className="h-6 w-6" />
                     <span className="font-bold">Garimpeiro</span>
-                    <span className="text-xs opacity-80 font-normal">Tier 3 (Comunidade)</span>
+                    <span className="text-xs opacity-80 font-normal">Tier 3</span>
                 </div>
             </TabsTrigger>
             <TabsTrigger value="miner" className="py-4 data-[state=active]:bg-amber-600 data-[state=active]:text-white rounded-lg transition-all">
                 <div className="flex flex-col items-center gap-2">
                     <Pickaxe className="h-6 w-6" />
                     <span className="font-bold">Minerador</span>
-                    <span className="text-xs opacity-80 font-normal">Tier 2 (Produção)</span>
+                    <span className="text-xs opacity-80 font-normal">Tier 2</span>
+                </div>
+            </TabsTrigger>
+            <TabsTrigger value="processor" className="py-4 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg transition-all">
+                <div className="flex flex-col items-center gap-2">
+                    <Factory className="h-6 w-6" />
+                    <span className="font-bold">Beneficiador</span>
+                    <span className="text-xs opacity-80 font-normal">Tier 4</span>
                 </div>
             </TabsTrigger>
             <TabsTrigger value="council" className="py-4 data-[state=active]:bg-slate-800 data-[state=active]:text-white rounded-lg transition-all">
                 <div className="flex flex-col items-center gap-2">
                     <ShieldCheck className="h-6 w-6" />
                     <span className="font-bold">Conselho</span>
-                    <span className="text-xs opacity-80 font-normal">Tier 1 (Gestão)</span>
+                    <span className="text-xs opacity-80 font-normal">Tier 1</span>
                 </div>
             </TabsTrigger>
           </TabsList>
@@ -207,6 +228,45 @@ export default function KYCPage() {
                     <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white h-12 text-lg" onClick={() => handleRegister('miner')} disabled={isSubmitting}>
                         {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : <ArrowRight className="mr-2" />}
                         Cadastrar Mina
+                    </Button>
+                </CardFooter>
+            </Card>
+          </TabsContent>
+
+          {/* TIER 4: PROCESSOR */}
+          <TabsContent value="processor">
+            <Card className="border-blue-100 shadow-lg mt-6">
+                <CardHeader className="bg-blue-50/50 border-b border-blue-100">
+                    <CardTitle className="text-blue-800">Cadastro de Beneficiador (Lavador)</CardTitle>
+                    <CardDescription>
+                        Para quem lava, corta e classifica as esmeraldas.
+                        <br/><strong>Benefício:</strong> Registro de serviços e certificação de lotes processados.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-6">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label>Razão Social / Nome do Responsável</Label>
+                            <Input name="fullName" placeholder="Nome ou Empresa" onChange={handleInputChange} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>CNPJ / CPF</Label>
+                            <Input name="cpf" placeholder="Documento Fiscal" onChange={handleInputChange} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Endereço da Unidade</Label>
+                            <Input name="address" placeholder="Endereço completo" onChange={handleInputChange} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Capacidade de Processamento (Kg/dia)</Label>
+                            <Input name="capacity" placeholder="Ex: 50kg" onChange={handleInputChange} />
+                        </div>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-lg" onClick={() => handleRegister('processor')} disabled={isSubmitting}>
+                        {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : <Factory className="mr-2" />}
+                        Cadastrar Unidade de Beneficiamento
                     </Button>
                 </CardFooter>
             </Card>

@@ -4,7 +4,7 @@ import { useActiveAccount } from "thirdweb/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { useMockWallet } from "@/hooks/useMockWallet";
-import { ShieldCheck, FilePlus, Loader2, FileText, History, ExternalLink, PlayCircle, Gavel, Scale, Coins } from "lucide-react";
+import { ShieldCheck, FilePlus, Loader2, FileText, History, ExternalLink, PlayCircle, Gavel, Scale, Coins, Factory } from "lucide-react";
 import { OraculoUpload } from "@/components/compound/OraculoUpload";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
@@ -69,7 +69,7 @@ function GovernanceContent() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { role, isDeliberative, isFiscal, isLegal, isAdmin, isMiner, isGarimpeiro, isCouncil, loading: roleLoading } = useUserRole();
+  const { role, isDeliberative, isFiscal, isLegal, isAdmin, isMiner, isGarimpeiro, isCouncil, isProcessor, loading: roleLoading } = useUserRole();
   const isDemo = searchParams.get('demo') === 'true';
   
   const [documents, setDocuments] = useState<DocumentRecord[]>([]);
@@ -216,6 +216,8 @@ function GovernanceContent() {
             return <Badge className="bg-amber-600 hover:bg-amber-700">Minerador (Tier 2)</Badge>;
         case 'garimpeiro':
             return <Badge className="bg-emerald-600 hover:bg-emerald-700">Garimpeiro (Tier 3)</Badge>;
+        case 'processor':
+            return <Badge className="bg-blue-600 hover:bg-blue-700">Beneficiador (Tier 4)</Badge>;
         default:
             return <Badge className="bg-slate-600 hover:bg-slate-700">Membro</Badge>;
     }
@@ -271,7 +273,7 @@ function GovernanceContent() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Documento Oficial</TableHead>
-                                    <TableHead>Código de Autenticidade</TableHead>
+                                    <TableHead className="hidden md:table-cell">Código de Autenticidade</TableHead>
                                     <TableHead>Situação</TableHead>
                                     <TableHead className="text-right">Ação</TableHead>
                                 </TableRow>
@@ -289,12 +291,14 @@ function GovernanceContent() {
                                             <TableCell className="font-medium">
                                                 <div className="flex items-center gap-2">
                                                     <FileText className="h-4 w-4 text-slate-400" />
-                                                    {doc.title}
+                                                    <span className="truncate max-w-[150px] md:max-w-none">{doc.title}</span>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="font-mono text-xs text-slate-500 flex items-center gap-1">
-                                                <div className="bg-slate-100 p-1 rounded"><ShieldCheck className="h-3 w-3 text-slate-400"/></div>
-                                                {doc.file_hash ? `${doc.file_hash.slice(0, 8)}...` : '-'}
+                                            <TableCell className="hidden md:table-cell font-mono text-xs text-slate-500">
+                                                <div className="flex items-center gap-1">
+                                                    <div className="bg-slate-100 p-1 rounded"><ShieldCheck className="h-3 w-3 text-slate-400"/></div>
+                                                    {doc.file_hash ? `${doc.file_hash.slice(0, 8)}...` : '-'}
+                                                </div>
                                             </TableCell>
                                             <TableCell>
                                                 {doc.status === 'attested_onchain' ? (
@@ -325,6 +329,25 @@ function GovernanceContent() {
 
             {/* Role Based Action Cards */}
             <div className="space-y-4">
+
+                {/* Economy Access Card (For All) */}
+                <Card className="shadow-lg border-emerald-200 bg-gradient-to-b from-white to-emerald-50/50">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-emerald-800">
+                            <Coins className="h-5 w-5" />
+                            Economia & Finanças
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-sm text-slate-600">
+                            Acesse o módulo de CPR Digital, Créditos de Carbono e antecipação de recebíveis.
+                        </p>
+                        <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => router.push('/economy')}>
+                            Acessar Módulo DeFi
+                        </Button>
+                    </CardContent>
+                </Card>
+
                 {isMiner && (
                     <Card className="shadow-lg border-amber-200 bg-gradient-to-b from-white to-amber-50/30">
                         <CardHeader>
@@ -364,6 +387,28 @@ function GovernanceContent() {
                                 onClick={() => router.push("/garimpeiro/dashboard")}
                             >
                                 Acessar Painel do Garimpeiro
+                            </Button>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isProcessor && (
+                    <Card className="shadow-lg border-blue-200 bg-gradient-to-b from-white to-blue-50/30">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-blue-800">
+                                <Factory className="h-5 w-5" />
+                                Lavagem e Beneficiamento
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-sm text-slate-600">
+                                Registre a entrada de lotes e a lavagem do xisto para os garimpeiros.
+                            </p>
+                            <Button 
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                onClick={() => router.push("/processor/dashboard")}
+                            >
+                                Acessar Painel do Lavador
                             </Button>
                         </CardContent>
                     </Card>

@@ -55,7 +55,7 @@ export function TripleShieldSection() {
                 className="relative group h-full overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
               >
                 <div className={`absolute top-0 left-0 w-full h-2 ${shield.bg}`} />
-                <div className="p-8 space-y-6">
+                <div className="p-6 md:p-8 space-y-6">
                   {/* Icon Container with Neon Effect */}
                   <div className="relative inline-flex items-center justify-center">
                     {/* The Aura/Glow */}

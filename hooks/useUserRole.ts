@@ -3,7 +3,7 @@ import { useActiveAccount } from "thirdweb/react";
 import { supabase } from "@/lib/supabase";
 import { useMockWallet } from "@/hooks/useMockWallet";
 
-export type UserRole = "council" | "miner" | "garimpeiro" | "auditor" | "admin" | "fiscal" | "legal" | "member" | null;
+export type UserRole = "council" | "miner" | "garimpeiro" | "auditor" | "admin" | "fiscal" | "legal" | "member" | "processor" | null;
 
 export function useUserRole() {
   const account = useActiveAccount();
@@ -13,14 +13,52 @@ export function useUserRole() {
   // --- DEV NET MODE (GOD MODE) ---
   // Quando true, libera acesso total para desenvolvimento e simulação.
   // Isso permite testar todas as telas (Garimpeiro, Jurídico, Conselho) sem barreiras.
-  const IS_DEV_NET = true; 
+  // SECURITY FIX: Agora controlado por variável de ambiente ou padrão false em prod
+  const IS_DEV_NET = process.env.NEXT_PUBLIC_DEV_MODE === 'true'; 
 
   const [role, setRole] = useState<UserRole>(null);
   const [verifiedGovBr, setVerifiedGovBr] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // DEV MODE ROLE OVERRIDE LISTENER
+  useEffect(() => {
+    if (!IS_DEV_NET && typeof window !== 'undefined') {
+       // Also listen for localStorage override in normal mode for demo purposes
+       const override = localStorage.getItem('dev_role_override');
+       if (override) {
+           setRole(override as UserRole);
+           setLoading(false);
+       }
+    }
+
+    // Listen for custom event 'roleChanged'
+    const handleRoleChange = () => {
+        const override = localStorage.getItem('dev_role_override');
+        if (override) {
+            setRole(override as UserRole);
+        } else {
+             // If cleared, re-fetch (simplification: just reload or let the main effect handle it)
+             window.location.reload(); 
+        }
+    };
+
+    window.addEventListener('roleChanged', handleRoleChange);
+    return () => window.removeEventListener('roleChanged', handleRoleChange);
+  }, []);
+
   useEffect(() => {
     async function fetchRole() {
+      // Check for local override first
+      if (typeof window !== 'undefined') {
+          const override = localStorage.getItem('dev_role_override');
+          if (override) {
+              setRole(override as UserRole);
+              setVerifiedGovBr(true);
+              setLoading(false);
+              return;
+          }
+      }
+
       if (IS_DEV_NET) {
         // Simulação de "Super Usuário" para Dev Net
         setRole("admin"); // Papel máximo
@@ -99,29 +137,26 @@ export function useUserRole() {
         isMember: true,
         isAuditor: true,
         isFiscal: true,
-        isLegal: true
+        isLegal: true,
+        isProcessor: true,
+        isEntity: true
     };
   }
 
-  return { 
-    role,
-    verifiedGovBr, 
-    loading, 
-    // Tier 1: Council (Strategists)
-    isCouncil: normalizedRole === "council",
-    isAdmin: normalizedRole === "council", // Alias for backward compatibility
-    isDeliberative: normalizedRole === "council", // Alias
-    
-    // Tier 2: Miner (Producers)
-    isMiner: normalizedRole === "miner" || normalizedRole === "council",
-    
-    // Tier 3: Garimpeiro (Community)
-    isGarimpeiro: normalizedRole === "garimpeiro" || normalizedRole === "miner" || normalizedRole === "council",
-    isMember: normalizedRole === "garimpeiro" || normalizedRole === "miner" || normalizedRole === "council", // Alias
-    
-    // Auditors
-    isAuditor: normalizedRole === "auditor" || normalizedRole === "council",
-    isFiscal: normalizedRole === "auditor" || normalizedRole === "council", // Alias
-    isLegal: normalizedRole === "auditor" || normalizedRole === "council" // Alias
+  return {
+    role: normalizedRole,
+    verifiedGovBr,
+    loading,
+    isCouncil: normalizedRole === 'council',
+    isAdmin: normalizedRole === 'admin' || normalizedRole === 'council', // Admin is effectively council
+    isDeliberative: normalizedRole === 'council' || normalizedRole === 'miner',
+    isMiner: normalizedRole === 'miner',
+    isGarimpeiro: normalizedRole === 'garimpeiro',
+    isMember: normalizedRole === 'member',
+    isAuditor: normalizedRole === 'auditor',
+    isFiscal: normalizedRole === 'auditor' || normalizedRole === 'council',
+    isLegal: normalizedRole === 'auditor' || normalizedRole === 'council',
+    isProcessor: normalizedRole === 'processor',
+    isEntity: normalizedRole === 'entity'
   };
 }

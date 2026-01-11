@@ -241,25 +241,25 @@ export default function LegalDashboard() {
                 
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Arquivos Recentes</h4>
-                  <div className="bg-white p-3 rounded border border-slate-200 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <p className="text-sm font-medium text-slate-700">Parecer_Tributario_ICMS_2024.pdf</p>
-                        <p className="text-xs text-slate-400">Enviado por Dr. Silva • 23/10/2024</p>
+                  <div className="bg-white p-3 rounded border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 w-full">
+                      <FileText className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-slate-700 truncate">Parecer_Tributario_ICMS_2024.pdf</p>
+                        <p className="text-xs text-slate-400 truncate">Enviado por Dr. Silva • 23/10/2024</p>
                       </div>
                     </div>
-                    <Badge variant="destructive" className="text-[10px]">CONFIDENCIAL</Badge>
+                    <Badge variant="destructive" className="text-[10px] shrink-0">CONFIDENCIAL</Badge>
                   </div>
-                  <div className="bg-white p-3 rounded border border-slate-200 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-4 w-4 text-slate-400" />
-                      <div>
-                        <p className="text-sm font-medium text-slate-700">Estrategia_Defesa_Processo_001.pdf</p>
-                        <p className="text-xs text-slate-400">Enviado por Dra. Costa • 20/10/2024</p>
+                  <div className="bg-white p-3 rounded border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 w-full">
+                      <FileText className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-slate-700 truncate">Estrategia_Defesa_Processo_001.pdf</p>
+                        <p className="text-xs text-slate-400 truncate">Enviado por Dra. Costa • 20/10/2024</p>
                       </div>
                     </div>
-                    <Badge variant="destructive" className="text-[10px]">CONFIDENCIAL</Badge>
+                    <Badge variant="destructive" className="text-[10px] shrink-0">CONFIDENCIAL</Badge>
                   </div>
                 </div>
               </div>

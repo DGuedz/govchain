@@ -51,6 +51,7 @@ export function Footer() {
             <h4 className="text-white font-semibold tracking-wide uppercase text-xs">Acesso à Plataforma</h4>
             <ul className="space-y-3 text-sm">
               <li><Link href="/kyc" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Portal do Cooperado</Link></li>
+              <li><Link href="/economy" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Economia Regenerativa</Link></li>
               <li><Link href="/public" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Rastreabilidade Pública</Link></li>
               <li><Link href="/gemlab" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Explorer GEMLAB</Link></li>
               <li><Link href="/verify" className="hover:text-[#50C878] transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-[#50C878] rounded-full opacity-0 hover:opacity-100 transition-opacity"/> Validar Certificado</Link></li>

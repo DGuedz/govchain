@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { hybridStorage } from "@/lib/hybridStorage";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useMockWallet } from "@/hooks/useMockWallet";
 import { Button } from "@/components/ui/button";
@@ -50,7 +51,25 @@ export default function ValidationDashboard() {
         .order('created_at', { ascending: true }); // Oldest first
       
       if (error) throw error;
-      if (data) setPendingFinds(data);
+      
+      let finalData = data || [];
+
+      // Merge with Local Storage updates (Hybrid Mode)
+      // If we validated something locally but Supabase failed/lagged, we should respect local state.
+      // Since we only fetch 'pending_validation', if we validated it locally, it should be REMOVED from this list.
+      
+      const localFinds = hybridStorage.readLocal('emerald_finds');
+      if (localFinds.length > 0) {
+          finalData = finalData.filter(serverItem => {
+              const localItem = localFinds.find((l: any) => l.id === serverItem.id);
+              if (localItem && localItem.status !== 'pending_validation') {
+                  return false; // Remove if locally processed
+              }
+              return true;
+          });
+      }
+
+      setPendingFinds(finalData);
 
     } catch (error) {
       console.error(error);
@@ -64,17 +83,18 @@ export default function ValidationDashboard() {
 
     try {
         // Get Validator Profile ID
-        const { data: profile } = await supabase.from('profiles').select('id').eq('wallet_address', activeAddress).single();
+        const profilesTable = await hybridStorage.from('profiles');
+        const { data: profile } = await profilesTable.select('id').eq('wallet_address', activeAddress).single();
         if (!profile) throw new Error("Perfil não encontrado.");
 
-        const { error } = await supabase
-            .from('emerald_finds')
-            .update({
-                status: decision,
-                validator_id: profile.id,
-                validated_at: new Date().toISOString()
-            })
-            .eq('id', findId);
+        const updateData = {
+            status: decision,
+            validator_id: profile.id,
+            validated_at: new Date().toISOString()
+        };
+
+        const table = await hybridStorage.from('emerald_finds');
+        const { error } = await table.update(updateData).eq('id', findId);
 
         if (error) throw error;
 

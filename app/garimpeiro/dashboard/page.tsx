@@ -57,8 +57,13 @@ export default function GarimpeiroDashboard() {
                 <Button className="flex-1 bg-[#50C878] hover:bg-[#40b068] h-10 text-sm font-semibold shadow-sm">
                     Solicitar PIX
                 </Button>
-                <Button variant="outline" className="flex-1 h-10 text-sm border-slate-200 text-slate-600 hover:bg-slate-50">
-                    Ver Extrato
+                <Button 
+                    variant="outline" 
+                    className="flex-1 h-10 text-sm border-slate-200 text-slate-600 hover:bg-slate-50 gap-2"
+                    onClick={() => router.push('/finance')}
+                >
+                    <Wallet className="h-4 w-4" />
+                    Banco
                 </Button>
             </div>
         </div>
@@ -108,6 +113,8 @@ export default function GarimpeiroDashboard() {
                             <div className="text-right">
                                 {i === 1 ? (
                                     <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 border-none px-3 py-1">Pago</Badge>
+                                ) : i === 2 ? (
+                                    <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 px-3 py-1">Em Beneficiamento</Badge>
                                 ) : (
                                     <Badge variant="outline" className="text-amber-600 border-amber-200 bg-amber-50 px-3 py-1">Em Validação</Badge>
                                 )}

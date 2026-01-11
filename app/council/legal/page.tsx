@@ -97,59 +97,61 @@ export default function LegalCouncilPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Documento (Draft)</TableHead>
-                  <TableHead>Responsável</TableHead>
-                  <TableHead>Data Submissão</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Ação</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <div className="flex flex-col">
-                      <span>Alteração Estatutária - Cap. IV</span>
-                      <span className="text-xs text-slate-500">Ref: Inclusão de novos critérios de admissão</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>Diretoria Executiva</TableCell>
-                  <TableCell>Hoje, 10:30</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                      Aguardando Parecer
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button size="sm" variant="default" className="bg-blue-600 hover:bg-blue-700">
-                      Analisar Minuta
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <div className="flex flex-col">
-                      <span>Contrato de Fornecimento - Maquinário Pesado</span>
-                      <span className="text-xs text-slate-500">Ref: Aquisição de Escavadeiras CAT</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>Dep. Compras</TableCell>
-                  <TableCell>Ontem, 16:45</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                      Em Análise
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button size="sm" variant="outline">
-                      Continuar Revisão
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Documento (Draft)</TableHead>
+                    <TableHead>Responsável</TableHead>
+                    <TableHead>Data Submissão</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Ação</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      <div className="flex flex-col">
+                        <span>Alteração Estatutária - Cap. IV</span>
+                        <span className="text-xs text-slate-500">Ref: Inclusão de novos critérios de admissão</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>Diretoria Executiva</TableCell>
+                    <TableCell>Hoje, 10:30</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                        Aguardando Parecer
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" variant="default" className="bg-blue-600 hover:bg-blue-700">
+                        Analisar Minuta
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      <div className="flex flex-col">
+                        <span>Contrato de Fornecimento - Maquinário Pesado</span>
+                        <span className="text-xs text-slate-500">Ref: Aquisição de Escavadeiras CAT</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>Dep. Compras</TableCell>
+                    <TableCell>Ontem, 16:45</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                        Em Análise
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" variant="outline">
+                        Continuar Revisão
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 

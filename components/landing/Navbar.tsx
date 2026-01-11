@@ -57,6 +57,9 @@ export function Navbar() {
           <Link href="/public" className="text-sm font-medium text-slate-600 hover:text-[#50C878] transition-colors">
             Transparência
           </Link>
+          <Link href="/economy" className="text-sm font-medium text-slate-600 hover:text-[#50C878] transition-colors">
+            Economia
+          </Link>
         </div>
 
         {/* Desktop CTA */}
@@ -111,6 +114,9 @@ export function Navbar() {
                 </Link>
                 <Link href="/public" className="text-lg font-medium text-slate-600 hover:text-[#50C878] transition-colors">
                   Transparência
+                </Link>
+                <Link href="/economy" className="text-lg font-medium text-slate-600 hover:text-[#50C878] transition-colors">
+                  Economia
                 </Link>
                 <hr className="border-slate-100 my-2" />
                 <Link href="/login" className="text-lg font-semibold text-slate-600 hover:text-[#50C878] transition-colors">

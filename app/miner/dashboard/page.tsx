@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { useRouter } from "next/navigation";
 import { useMockWallet } from "@/hooks/useMockWallet";
-import { supabase } from "@/lib/supabase";
+import { hybridStorage } from "@/lib/hybridStorage";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,19 +29,22 @@ export default function MinerDashboard() {
 
   // Fetch recent batches
   useEffect(() => {
-    if (account) {
+    if (activeAddress) {
       fetchBatches();
     }
-  }, [account]);
+  }, [activeAddress]);
 
   async function fetchBatches() {
     try {
+      if (!activeAddress) return;
+      
       // Get profile id first
-      const { data: profile } = await supabase.from('profiles').select('id').eq('wallet_address', account?.address).single();
+      const profilesTable = await hybridStorage.from('profiles');
+      const { data: profile } = await profilesTable.select('id').eq('wallet_address', activeAddress).single();
       
       if (profile) {
-          const { data, error } = await supabase
-            .from('shale_batches')
+          const batchesTable = await hybridStorage.from('shale_batches');
+          const { data, error } = await batchesTable
             .select('*')
             .eq('miner_id', profile.id)
             .order('created_at', { ascending: false });
@@ -59,27 +62,35 @@ export default function MinerDashboard() {
 
     setIsSubmitting(true);
     try {
-        // Get Miner Profile ID
-        const { data: profile } = await supabase.from('profiles').select('id').eq('wallet_address', account.address).single();
-        
-        if (!profile) throw new Error("Perfil de minerador não encontrado.");
-
         // Create Batch Hash (Simulation of on-chain tracking)
         const batchHash = `BATCH-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-        const { error } = await supabase.from('shale_batches').insert({
+        // Get profile
+        const profilesTable = await hybridStorage.from('profiles');
+        const { data: profile } = await profilesTable.select('id').eq('wallet_address', activeAddress).single();
+        if (!profile) throw new Error("Perfil de minerador não encontrado.");
+
+        const batchData = {
             miner_id: profile.id,
             buyer_wallet: buyerWallet,
             weight_kg: parseFloat(weight),
-            batch_hash: batchHash
-        });
+            batch_hash: batchHash,
+            created_at: new Date().toISOString() // Optimistic timestamp
+        };
 
+        // Use Hybrid Storage
+        const batchesTable = await hybridStorage.from('shale_batches');
+        const { error, data } = await batchesTable.insert(batchData);
+        
         if (error) throw error;
+
+        // Optimistic UI Update is handled by fetchBatches or we can manually add
+        // hybridStorage writes to local immediately, so fetchBatches should see it.
+        fetchBatches();
 
         toast.success("Lote de Xisto registrado com sucesso!");
         setWeight("");
         setBuyerWallet("");
-        fetchBatches();
 
     } catch (error) {
         console.error(error);
@@ -102,11 +113,11 @@ export default function MinerDashboard() {
     <main className="min-h-screen bg-slate-50 py-8">
       <div className="container mx-auto px-4 max-w-5xl">
         
-        <div className="mb-6 flex items-center justify-between">
-            <Button variant="ghost" onClick={() => router.push('/governance')} className="gap-2 pl-0">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+            <Button variant="ghost" onClick={() => router.push('/governance')} className="gap-2 pl-0 hover:bg-slate-100 -ml-2 sm:ml-0">
                 <ArrowLeft className="h-4 w-4" /> Voltar ao Painel
             </Button>
-            <Badge className="bg-amber-600 hover:bg-amber-700 gap-1">
+            <Badge className="bg-amber-600 hover:bg-amber-700 gap-1 py-1.5 px-3 text-sm w-full sm:w-auto justify-center">
                 <Pickaxe className="h-3 w-3" />
                 Tier 2: Minerador
             </Badge>

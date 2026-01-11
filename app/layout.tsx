@@ -5,6 +5,7 @@ import { ThirdwebProvider } from "thirdweb/react";
 import { cn } from "@/lib/utils";
 import { LayoutNavbar } from "@/components/LayoutNavbar";
 import { Toaster } from "@/components/ui/sonner";
+import { SecurityBadge } from "@/components/functional/SecurityBadge";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -42,6 +43,7 @@ export default function RootLayout({
             </div>
           </div>
           <Toaster />
+          <SecurityBadge />
         </ThirdwebProvider>
       </body>
     </html>
